@@ -1,0 +1,169 @@
+@use '@angular/material' as mat;
+
+$primary-50: #edeaf8;
+$primary-100: #d1cff1;
+$primary-200: #b5b4e9;
+$primary-300: #9989e2;
+$primary-400: #8572da;
+$primary-500: #7763c5; // Couleur principale
+$primary-600: #6b57b1;
+$primary-700: #5f4b9d;
+$primary-800: #533f89;
+$primary-900: #473375;
+$primary-A100: #c5baff;
+$primary-A200: #a28fff;
+$primary-A400: #7f5aff;
+$primary-A700: #6641ff;
+
+
+$secondary-50: #fcf6f3;
+$secondary-100: #f7e9e1;
+$secondary-200: #f1dbcd; /* disabled */
+$secondary-300: #ebcdb8;
+$secondary-400: #e7c2a9;
+$secondary-500: #e3b79a;
+$secondary-600: #e0b092; /* background */
+$secondary-700: #dca788;
+$secondary-800: #d89f7e;
+$secondary-900: #916248; /* dark shadow */
+$secondary-A100: #f9e6bc; /* gradient 2 */
+$secondary-A200: #f5d68f;
+$secondary-A400: #f1c562;
+$secondary-A700: #eeb841;
+
+$warning-50: #ffebee;
+$warning-100: #ffcdd2;
+$warning-200: #ef9a9a;
+$warning-300: #e57373;
+$warning-400: #ef5350;
+$warning-500: #f44336;
+$warning-600: #e53935;
+$warning-700: #d32f2f;
+$warning-800: #c62828;
+$warning-900: #b71c1c;
+$warning-A100: #ff8a80;
+$warning-A200: #ff5252;
+$warning-A400: #ff1744;
+$warning-A700: #d50000;
+
+$dark-primary-text: #1b1924;
+$light-primary-text: #fcf6f3;
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+$primary: mat.m2-define-palette(
+    (
+      50: $primary-50,
+      100: $primary-100,
+      200: $primary-200,
+      300: $primary-300,
+      400: $primary-400,
+      500: $primary-500,
+      600: $primary-600,
+      700: $primary-700,
+      800: $primary-800,
+      900: $primary-900,
+      A100: $primary-100,
+      A200: $primary-200,
+      A400: $primary-400,
+      A700: $primary-700,
+      contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $dark-primary-text,
+        400: $light-primary-text,
+        500: $light-primary-text,
+        600: $light-primary-text,
+        700: $light-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $light-primary-text,
+        A400: $light-primary-text,
+        A700: $light-primary-text
+      )
+    )
+);
+
+$accent: mat.m2-define-palette(
+    (
+      50: $secondary-50,
+      100: $secondary-100,
+      200: $secondary-200,
+      300: $secondary-300,
+      400: $secondary-400,
+      500: $secondary-500,
+      600: $secondary-600,
+      700: $secondary-700,
+      800: $secondary-800,
+      900: $secondary-900,
+      A100: $secondary-A100,
+      A200: $secondary-A200,
+      A400: $secondary-A400,
+      A700: $secondary-A700,
+      contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $dark-primary-text,
+        400: $dark-primary-text,
+        500: $dark-primary-text,
+        600: $dark-primary-text,
+        700: $dark-primary-text,
+        800: $dark-primary-text,
+        900: $dark-primary-text,
+        A100: $dark-primary-text,
+        A200: $light-primary-text,
+        A400: $light-primary-text,
+        A700: $light-primary-text
+      )
+    )
+);
+
+// The warn palette is optional (defaults to red).
+$warn: mat.m2-define-palette(
+    (
+      50: $warning-50,
+      100: $warning-100,
+      200: $warning-200,
+      300: $warning-300,
+      400: $warning-400,
+      500: $warning-500,
+      600: $warning-600,
+      700: $warning-700,
+      800: $warning-800,
+      900: $warning-900,
+      A100: $warning-A100,
+      A200: $warning-A200,
+      A400: $warning-A400,
+      A700: $warning-A700,
+      contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $dark-primary-text,
+        400: $dark-primary-text,
+        500: $light-primary-text,
+        600: $light-primary-text,
+        700: $light-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $light-primary-text,
+        A400: $light-primary-text,
+        A700: $light-primary-text
+      )
+    )
+);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$theme: mat.m2-define-light-theme(
+    (
+      color: (
+        primary: $primary,
+        accent: $accent,
+        warn: $warn
+      )
+    )
+);

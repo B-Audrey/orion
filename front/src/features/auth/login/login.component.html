@@ -1,0 +1,26 @@
+<div>
+  <mat-icon routerLink="/auth" >arrow_back</mat-icon>
+  <h1>Se connecter</h1>
+</div>
+<form [formGroup]="loginForm" (ngSubmit)="login(loginForm.getRawValue())">
+  <div>
+    <mat-form-field>
+      <mat-label>E-mail ou nom d'utilisateur</mat-label>
+      <input matInput formControlName="username"/>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Mot de passe</mat-label>
+      <input matInput formControlName="password" type="password"/>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button mat-raised-button color="primary" [disabled]="!loginForm.valid">
+      Se connecter
+    </button>
+  </div>
+
+</form>
