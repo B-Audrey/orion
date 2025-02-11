@@ -2,8 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { map, of, switchMap } from 'rxjs';
-import {UserActions, UserState} from '../shared/store';
-
+import { UserActions, UserState } from '../shared/store';
 
 export const authGuard: CanActivateFn = () => {
   const store: Store = inject(Store);

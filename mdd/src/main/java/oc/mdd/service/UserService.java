@@ -1,10 +1,13 @@
 package oc.mdd.service;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import oc.mdd.dto.UserSigninDto;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.model.UserModel;
 import oc.mdd.repository.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,14 @@ public class UserService {
                 .orElseThrow(() -> new Exception("User not found"));
     }
 
+    public UserEntity findUserByNameOrMail(String search) {
+        if(search.contains("@")) {
+            return userRepository.findByEmail(search);
+        } else {
+            return userRepository.findByName(search);
+        }
+    }
+
     public UserEntity registerUser(UserSigninDto userSinginDto) throws Exception {
         // Vérifier si l'email existe déjà
         if (userRepository.findByEmail(userSinginDto.getEmail()) != null) {
@@ -45,5 +56,9 @@ public class UserService {
         newUser.setPassword(passwordEncoder.encode(userSinginDto.getPassword()));
         newUser.setName(userSinginDto.getName());
         return userRepository.save(newUser);
+    }
+
+    public UserEntity getUserByName(String username) {
+        return userRepository.findByName(username);
     }
 }

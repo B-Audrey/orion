@@ -1,26 +1,27 @@
-<div>
-  <mat-icon routerLink="/auth" >arrow_back</mat-icon>
-  <h1>Se connecter</h1>
+<img class="desktop-display" ngSrc="assets/img/logo.png" alt="mdd logo" height="81" width="140" />
+<hr />
+<div class="back-button" routerLink="/auth">
+  <span class="material-symbols-outlined">arrow_back</span>
 </div>
 <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.getRawValue())">
-  <div>
+  <img class="mobile-display" ngSrc="assets/img/logo.png" alt="mdd logo" height="130" width="225" />
+
+  <h1>Se connecter</h1>
+  <div class="form-field">
+    <label>E-mail ou nom d'utilisateur</label>
     <mat-form-field>
-      <mat-label>E-mail ou nom d'utilisateur</mat-label>
-      <input matInput formControlName="username"/>
+      <input matInput formControlName="username" />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field">
+    <label>Mot de passe</label>
+    <mat-form-field>
+      <input matInput formControlName="password" type="password" />
     </mat-form-field>
   </div>
 
   <div>
-    <mat-form-field>
-      <mat-label>Mot de passe</mat-label>
-      <input matInput formControlName="password" type="password"/>
-    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="!loginForm.valid">Se connecter</button>
   </div>
-
-  <div>
-    <button mat-raised-button color="primary" [disabled]="!loginForm.valid">
-      Se connecter
-    </button>
-  </div>
-
 </form>

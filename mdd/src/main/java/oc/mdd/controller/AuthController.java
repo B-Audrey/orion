@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +55,7 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken, HttpServletResponse response) {
+    public ResponseEntity<?> refreshToken(@CookieValue(value = "mddRefreshToken", required = false) String refreshToken, HttpServletResponse response) {
         try {
             if (refreshToken == null) {
                 ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, "error");
@@ -68,7 +69,7 @@ public class AuthController {
             }
             String accessToken = jwtUtils.generateToken(email);
             String newRefreshToken = jwtUtils.generateRefreshToken(email);
-            Cookie refreshTokenCookie = new Cookie("refreshToken", newRefreshToken);
+            Cookie refreshTokenCookie = new Cookie("mddRefreshToken", newRefreshToken);
             refreshTokenCookie.setHttpOnly(true);
             refreshTokenCookie.setPath("/api/auth/refresh");
             refreshTokenCookie.setMaxAge(86400000); // modifier ici avec la variable
@@ -94,10 +95,15 @@ public class AuthController {
                             authLoginDto.getPassword()
                     )
             );
+            UserEntity user = userService.findUserByNameOrMail(authLoginDto.getUsername());
+            if(user == null) {
+                ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, "error");
+                return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+            }
             if (authentication.isAuthenticated()) {
-                String accessToken = jwtUtils.generateToken(authLoginDto.getUsername());
-                String refreshToken = jwtUtils.generateRefreshToken(authLoginDto.getUsername());
-                Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+                String accessToken = jwtUtils.generateToken(user.getEmail());
+                String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());
+                Cookie refreshTokenCookie = new Cookie("mddRefreshToken", refreshToken);
                 refreshTokenCookie.setHttpOnly(true);
                 refreshTokenCookie.setPath("/api/auth/refresh");
                 refreshTokenCookie.setMaxAge(86400000);

@@ -1,9 +1,10 @@
 @use 'styles/material';
 @use 'styles/palette';
+@use 'styles/form';
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .mat-snack-bar-container.success {
@@ -16,3 +17,11 @@ body {
   color: white;
 }
 
+* {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 24px;
+}

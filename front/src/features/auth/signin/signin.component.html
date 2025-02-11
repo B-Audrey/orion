@@ -1,48 +1,49 @@
-<div>
-  <mat-icon routerLink="/auth">arrow_back</mat-icon>
-  <h1>S'inscrire</h1>
+<img class="desktop-display" ngSrc="assets/img/logo.png" alt="mdd logo" height="81" width="140" />
+<hr />
+<div class="back-button" routerLink="/auth">
+  <span class="material-symbols-outlined">arrow_back</span>
 </div>
 <form [formGroup]="signinForm" (ngSubmit)="signin()">
-  <div>
+  <img class="mobile-display" ngSrc="assets/img/logo.png" alt="mdd logo" height="130" width="225" />
+
+  <h1>S'inscrire</h1>
+  <div class="form-field">
+    <label>Nom d'utilisateur</label>
     <mat-form-field>
-      <mat-label>Nom d'utilisateur</mat-label>
-      <input matInput formControlName="name" type="text">
+      <input matInput formControlName="name" type="text" />
     </mat-form-field>
   </div>
 
-  <div>
+  <div class="form-field">
+    <label>Adresse e-mail</label>
     <mat-form-field>
-      <mat-label>Adresse e-mail</mat-label>
-      <input matInput formControlName="email" type="email"/>
+      <input matInput formControlName="email" type="email" />
     </mat-form-field>
   </div>
 
-  <div>
-    <mat-form-field>
-      <mat-label>Mot de passe</mat-label>
-      <input matInput formControlName="password" type="password"/>
-    </mat-form-field>
-    @if (signinForm.get('password')?.dirty && signinForm.controls['password'].invalid) {
-      <div>
+  <div class="form-field">
+    <div class="password">
+      <label>Mot de passe</label>
+      @if (signinForm.get('password')?.dirty && signinForm.controls['password'].invalid) {
         @if (!signinForm.controls.password.getError('isLongEnough')) {
-          <mat-error>Le mot de passe doit contenir au moins 8 caractères</mat-error>
+          <mat-error>doit contenir au moins 8 caractères</mat-error>
         } @else if (!signinForm.controls.password.getError('hasNumber')) {
-          <mat-error>Le mot de passe doit contenir un nombre</mat-error>
+          <mat-error>doit contenir un nombre</mat-error>
         } @else if (!signinForm.controls.password.getError('hasLowerCase')) {
-          <mat-error>Le mot de passe doit contenir un minuscule</mat-error>
+          <mat-error>doit contenir un minuscule</mat-error>
         } @else if (!signinForm.controls.password.getError('hasUpperCase')) {
-          <mat-error>Le mot de passe doit contenir un majuscule</mat-error>
+          <mat-error>doit contenir un majuscule</mat-error>
         } @else if (!signinForm.controls.password.getError('hasSymbol')) {
-          <mat-error>Le mot de passe doit contenir un caractère spécial</mat-error>
+          <mat-error>doit contenir un caractère spécial</mat-error>
         }
-      </div>
-    }
+      }
+    </div>
+    <mat-form-field>
+      <input matInput formControlName="password" type="password" />
+    </mat-form-field>
   </div>
 
   <div>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">
-      S'inscrire
-    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">S'inscrire</button>
   </div>
-
 </form>

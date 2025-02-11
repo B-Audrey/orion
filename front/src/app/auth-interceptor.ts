@@ -11,7 +11,7 @@ import { EMPTY, first, Observable, switchMap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { Router } from '@angular/router';
-import {ToastService} from '../shared/services/toast.service';
+import { ToastService } from '../shared/services/toast.service';
 import { UserState, UserActions } from '../shared/store';
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
@@ -36,7 +36,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     next: HttpHandlerFn,
   ): Observable<HttpEvent<unknown>> {
     switch (err.status) {
-      case HttpStatusCode.Forbidden:
+      case HttpStatusCode.Unauthorized:
         return _refreshAndRetry(request, next);
       case HttpStatusCode.InternalServerError:
         toastService.error('Oups, erreur 500');
@@ -55,7 +55,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
       switchMap(() => next(_addBearer(request))),
       catchError(err => {
         const error = err as HttpErrorResponse;
-        if (error.status === HttpStatusCode.Forbidden) {
+        if (error.status === HttpStatusCode.Unauthorized) {
           router.navigate(['/auth/login']);
           return EMPTY;
         }

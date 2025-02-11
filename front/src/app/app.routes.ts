@@ -1,11 +1,11 @@
-import {Route} from '@angular/router';
-import {LayoutComponent} from './layout/layout.component';
-import {LoginComponent} from '../features/auth/login/login.component';
-import {ErrorComponent} from '../features/error/error.component';
-import {ArticlesComponent} from '../features/articles/articles.component';
-import {authGuard} from './auth.guard';
-import {AuthComponent} from '../features/auth/auth.component';
-import {SigninComponent} from '../features/auth/signin/signin.component';
+import { Route } from '@angular/router';
+import { LayoutComponent } from './layout/layout.component';
+import { LoginComponent } from '../features/auth/login/login.component';
+import { ErrorComponent } from '../features/error/error.component';
+import { ArticlesComponent } from '../features/articles/articles.component';
+import { authGuard } from './auth.guard';
+import { AuthComponent } from '../features/auth/auth.component';
+import { SigninComponent } from '../features/auth/signin/signin.component';
 
 export const routes: Route[] = [
   {
@@ -21,7 +21,7 @@ export const routes: Route[] = [
       {
         path: 'home',
         component: ArticlesComponent,
-      }
+      },
     ],
   },
   {
@@ -39,7 +39,7 @@ export const routes: Route[] = [
       {
         path: 'signin',
         component: SigninComponent,
-      }
+      },
     ],
   },
   {

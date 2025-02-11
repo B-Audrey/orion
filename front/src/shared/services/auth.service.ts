@@ -1,7 +1,7 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpBackend, HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {User} from '../interfaces/user';
+import { inject, Injectable } from '@angular/core';
+import { HttpBackend, HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../interfaces/user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -22,7 +22,6 @@ export class AuthService {
     return this.http.get<User>('/api/auth/me');
   }
 
-
   logout$() {
     return this.http.get('/api/auth/logout');
   }
@@ -33,6 +32,4 @@ export class AuthService {
       password,
     });
   }
-
-
 }
