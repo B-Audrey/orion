@@ -6,6 +6,8 @@ import { ArticlesComponent } from '../features/articles/articles.component';
 import { authGuard } from './auth.guard';
 import { AuthComponent } from '../features/auth/auth.component';
 import { SigninComponent } from '../features/auth/signin/signin.component';
+import { TopicsComponent } from '../features/topics/topics.component';
+import { UserProfileComponent } from '../features/user-profile/user-profile.component';
 
 export const routes: Route[] = [
   {
@@ -21,6 +23,14 @@ export const routes: Route[] = [
       {
         path: 'home',
         component: ArticlesComponent,
+      },
+      {
+        path: 'topics',
+        component: TopicsComponent,
+      },
+      {
+        path: 'my-profile',
+        component: UserProfileComponent,
       },
     ],
   },
