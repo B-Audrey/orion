@@ -3,21 +3,21 @@
 <div class="back-button" routerLink="/auth">
   <span class="material-symbols-outlined">arrow_back</span>
 </div>
-<form [formGroup]="loginForm" (ngSubmit)="login(loginForm.getRawValue())">
+<form [formGroup]="loginForm" (ngSubmit)="login$(loginForm.getRawValue())">
   <img class="mobile-display" ngSrc="assets/img/logo.png" alt="mdd logo" height="130" width="225" />
 
   <h1>Se connecter</h1>
   <div class="form-field">
-    <label>E-mail ou nom d'utilisateur</label>
+    <label for="username">E-mail ou nom d'utilisateur</label>
     <mat-form-field>
-      <input matInput formControlName="username" />
+      <input id="username" matInput formControlName="username" />
     </mat-form-field>
   </div>
 
   <div class="form-field">
-    <label>Mot de passe</label>
+    <label for="password">Mot de passe</label>
     <mat-form-field>
-      <input matInput formControlName="password" type="password" />
+      <input id="password" matInput formControlName="password" type="password" />
     </mat-form-field>
   </div>
 

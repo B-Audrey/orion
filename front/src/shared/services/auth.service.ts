@@ -18,7 +18,6 @@ export class AuthService {
   }
 
   getMe$(): Observable<User> {
-    console.log('je rentre dans le getMe du service');
     return this.http.get<User>('/api/auth/me');
   }
 

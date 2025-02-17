@@ -8,15 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import oc.mdd.config.JwtUtils;
 import oc.mdd.dto.AuthLoginDto;
 import oc.mdd.entity.UserEntity;
-import oc.mdd.model.ErrorResponseModel;
-import oc.mdd.model.UserModel;
+import oc.mdd.model.*;
+import oc.mdd.model.error.ForbiddenException;
+import oc.mdd.model.error.NotFoundException;
+import oc.mdd.model.error.UnauthorizedException;
 import oc.mdd.service.UserService;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,9 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
+    @Value("${app.refresh-expiration-time}")
+    private String refreshExpirationTime;
+
     @GetMapping("/me")
     public ResponseEntity<?> returnMeInfos(HttpServletRequest request) {
         try {
@@ -41,16 +45,14 @@ public class AuthController {
                 UserModel me = userService.convertToUserModel(user);
                 return ResponseEntity.ok(me);
             }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+            throw new UnauthorizedException("user not found");
         } catch (Exception e) {
             if ("user not found".equals(e.getMessage())) {
                 log.error("An unknown user tried to ask for me info with a valid token !!! ");
-                ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.NOT_FOUND, e.getMessage());
-                return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+                throw new NotFoundException(e.getMessage());
             }
             log.error(e.getMessage());
-            ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, e.getMessage());
-            return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+            throw new ForbiddenException(e.getMessage());
         }
     }
 
@@ -58,21 +60,19 @@ public class AuthController {
     public ResponseEntity<?> refreshToken(@CookieValue(value = "mddRefreshToken", required = false) String refreshToken, HttpServletResponse response) {
         try {
             if (refreshToken == null) {
-                ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, "error");
-                return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+                throw new UnauthorizedException("error");
             }
             String email = jwtUtils.extractUserEmail(refreshToken);
             UserEntity user = userService.getUserByEmail(email);
             if (user == null) {
-                ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, "error");
-                return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+                throw new UnauthorizedException("error");
             }
             String accessToken = jwtUtils.generateToken(email);
             String newRefreshToken = jwtUtils.generateRefreshToken(email);
             Cookie refreshTokenCookie = new Cookie("mddRefreshToken", newRefreshToken);
             refreshTokenCookie.setHttpOnly(true);
             refreshTokenCookie.setPath("/api/auth/refresh");
-            refreshTokenCookie.setMaxAge(86400000); // modifier ici avec la variable
+            refreshTokenCookie.setMaxAge(Integer.parseInt(refreshExpirationTime));
             response.addCookie(refreshTokenCookie);
 
             Map<String, Object> authData = new HashMap<>();
@@ -81,8 +81,7 @@ public class AuthController {
         } catch (Exception e) {
             String message = e.getMessage();
             log.warn(message);
-            ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, "error");
-            return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+            throw new UnauthorizedException(message);
         }
     }
 
@@ -96,9 +95,8 @@ public class AuthController {
                     )
             );
             UserEntity user = userService.findUserByNameOrMail(authLoginDto.getUsername());
-            if(user == null) {
-                ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, "error");
-                return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+            if (user == null) {
+                throw new UnauthorizedException("error");
             }
             if (authentication.isAuthenticated()) {
                 String accessToken = jwtUtils.generateToken(user.getEmail());
@@ -106,20 +104,18 @@ public class AuthController {
                 Cookie refreshTokenCookie = new Cookie("mddRefreshToken", refreshToken);
                 refreshTokenCookie.setHttpOnly(true);
                 refreshTokenCookie.setPath("/api/auth/refresh");
-                refreshTokenCookie.setMaxAge(86400000);
+                refreshTokenCookie.setMaxAge(Integer.parseInt(refreshExpirationTime));
                 response.addCookie(refreshTokenCookie);
 
                 Map<String, Object> authData = new HashMap<>();
                 authData.put("token", accessToken);
                 return ResponseEntity.ok(authData);
             }
-            ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, "error");
-            return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+            throw new UnauthorizedException("error");
+
         } catch (Exception e) {
-            String message = e.getMessage();
-            log.warn(message);
-            ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, "error");
-            return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+            log.warn(e.getMessage());
+            throw new UnauthorizedException("error");
         }
     }
 
@@ -132,7 +128,6 @@ public class AuthController {
         response.addCookie(refreshTokenCookie);
         return ResponseEntity.ok("Logout successful");
     }
-
 
 
 }

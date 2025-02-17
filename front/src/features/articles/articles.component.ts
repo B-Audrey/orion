@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-articles',
+  selector: 'mdd-articles',
   standalone: true,
   imports: [],
   templateUrl: './articles.component.html',

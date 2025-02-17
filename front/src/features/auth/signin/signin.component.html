@@ -8,22 +8,22 @@
 
   <h1>S'inscrire</h1>
   <div class="form-field">
-    <label>Nom d'utilisateur</label>
+    <label for="name">Nom d'utilisateur</label>
     <mat-form-field>
-      <input matInput formControlName="name" type="text" />
+      <input id="name" matInput formControlName="name" type="text" />
     </mat-form-field>
   </div>
 
   <div class="form-field">
-    <label>Adresse e-mail</label>
+    <label for="mail">Adresse e-mail</label>
     <mat-form-field>
-      <input matInput formControlName="email" type="email" />
+      <input id="mail" matInput formControlName="email" type="email" />
     </mat-form-field>
   </div>
 
   <div class="form-field">
     <div class="password">
-      <label>Mot de passe</label>
+      <label for="password">Mot de passe</label>
       @if (signinForm.get('password')?.dirty && signinForm.controls['password'].invalid) {
         @if (!signinForm.controls.password.getError('isLongEnough')) {
           <mat-error>doit contenir au moins 8 caractères</mat-error>
@@ -39,11 +39,13 @@
       }
     </div>
     <mat-form-field>
-      <input matInput formControlName="password" type="password" />
+      <input id="password" matInput formControlName="password" type="password" />
     </mat-form-field>
   </div>
 
   <div>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">S'inscrire</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">
+      S'inscrire
+    </button>
   </div>
 </form>

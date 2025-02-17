@@ -14,7 +14,10 @@ import { Router } from '@angular/router';
 import { ToastService } from '../shared/services/toast.service';
 import { UserState, UserActions } from '../shared/store';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
+export const authInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+) => {
   const store = inject(Store);
   const router = inject(Router);
   const toastService = inject(ToastService);
@@ -23,9 +26,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     .pipe(catchError(err => _errorHandler(err, req, next)));
 
   function _addBearer(req: HttpRequest<unknown>): HttpRequest<unknown> {
-    console.log('je rentre dans le addBearer');
     const token = store.selectSnapshot(UserState.getAccessToken);
-    console.log('token', token);
     const headers = req.headers.append('Authorization', `Bearer ${token}`);
     return token ? req.clone({ headers }) : req;
   }
@@ -49,7 +50,10 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     }
   }
 
-  function _refreshAndRetry(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  function _refreshAndRetry(
+    request: HttpRequest<unknown>,
+    next: HttpHandlerFn,
+  ): Observable<HttpEvent<unknown>> {
     return store.dispatch(new UserActions.Refresh()).pipe(
       first(),
       switchMap(() => next(_addBearer(request))),

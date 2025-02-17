@@ -1,11 +1,11 @@
 package oc.mdd.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oc.mdd.dto.UserSigninDto;
 import oc.mdd.entity.UserEntity;
-import oc.mdd.model.ErrorResponseModel;
+import oc.mdd.model.error.BadRequestException;
+import oc.mdd.model.error.UnauthorizedException;
 import oc.mdd.service.UserService;
 import oc.mdd.utils.Utils;
 import org.springframework.http.HttpStatus;
@@ -32,16 +32,14 @@ public class UserController {
             if (!isPasswordStrong) {
                 String message = "Password is not strong enough";
                 log.warn(message);
-                ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, message);
-                return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+                throw new BadRequestException(message);
             }
             UserEntity newUser = userService.registerUser(userSigninDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
         } catch (Exception e) {
             String message = e.getMessage();
             log.warn(message);
-            ErrorResponseModel errorResponse = new ErrorResponseModel(HttpStatus.UNAUTHORIZED, message);
-            return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+            throw new UnauthorizedException(message);
         }
     }
 

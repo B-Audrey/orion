@@ -4,7 +4,6 @@ import * as UserActions from './user.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../interfaces/user';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
@@ -36,16 +35,14 @@ export class UserState {
 
   @Action(UserActions.Me)
   me$(ctx: StateContext<UserStateModel>): Observable<unknown> {
-    console.log('je rentre dans le me');
     return this.#authService.getMe$().pipe(tap((user: User) => ctx.patchState({ user })));
   }
 
   @Action(UserActions.Refresh)
   refresh$(ctx: StateContext<UserStateModel>): Observable<unknown> {
-    console.log('je rentre dans le refresh');
     return this.#authService.refresh$().pipe(
       tap(({ token }) => ctx.patchState({ accessToken: token })),
-      catchError((err: HttpErrorResponse) => {
+      catchError(() => {
         return this.#router.navigate(['/auth/login']);
       }),
     );
@@ -55,10 +52,10 @@ export class UserState {
   logout$(ctx: StateContext<UserStateModel>) {
     return this.#authService.logout$().pipe(
       switchMap(() => {
-        ctx.patchState(<UserStateModel>(<unknown>{
+        ctx.patchState({
           user: null,
           accessToken: null,
-        }));
+        } as unknown as UserStateModel);
         this.#toastService.success('Vous êtes déconnecté');
         return this.#router.navigate(['/login']);
       }),
@@ -67,7 +64,8 @@ export class UserState {
 
   @Action(UserActions.Login)
   login$(ctx: StateContext<UserStateModel>, { username, password }: UserActions.Login) {
-    console.log('je rentre dans le login state avec : ', username, password);
-    return this.#authService.login$(username, password).pipe(tap(({ accessToken }) => ctx.patchState({ accessToken })));
+    return this.#authService
+      .login$(username, password)
+      .pipe(tap(({ accessToken }) => ctx.patchState({ accessToken })));
   }
 }

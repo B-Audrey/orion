@@ -8,5 +8,7 @@ export function _isPasswordStrongValidator(control: AbstractControl): Validation
   const hasSymbols = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password);
   const isLongEnough = password.length >= 8;
   const isPasswordStrong = hasNumber && hasUpperCase && hasLowerCase && hasSymbols && isLongEnough;
-  return !isPasswordStrong ? { hasNumber, hasUpperCase, hasLowerCase, hasSymbols, isLongEnough } : null;
+  return !isPasswordStrong
+    ? { hasNumber, hasUpperCase, hasLowerCase, hasSymbols, isLongEnough }
+    : null;
 }

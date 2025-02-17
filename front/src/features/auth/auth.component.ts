@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-auth',
+  selector: 'mdd-auth',
   standalone: true,
   imports: [NgOptimizedImage, MatButton, RouterLink],
   templateUrl: './auth.component.html',
