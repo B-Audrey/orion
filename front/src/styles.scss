@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'styles/material';
+@use 'styles/palette';
+@use 'styles/form';
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.mat-snack-bar-container.success {
+  background-color: #4caf50; /* Vert pour le succès */
+  color: white;
+}
+
+.mat-snack-bar-container.error {
+  background-color: #f44336; /* Rouge pour l'erreur */
+  color: white;
+}
+
+* {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 24px;
+}

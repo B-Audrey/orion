@@ -1,0 +1,51 @@
+<img class="desktop-display" ngSrc="assets/img/logo.png" alt="mdd logo" height="81" width="140" />
+<hr />
+<div class="back-button" routerLink="/auth">
+  <span class="material-symbols-outlined">arrow_back</span>
+</div>
+<form [formGroup]="signinForm" (ngSubmit)="signin()">
+  <img class="mobile-display" ngSrc="assets/img/logo.png" alt="mdd logo" height="130" width="225" />
+
+  <h1>S'inscrire</h1>
+  <div class="form-field">
+    <label for="name">Nom d'utilisateur</label>
+    <mat-form-field>
+      <input id="name" matInput formControlName="name" type="text" />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field">
+    <label for="mail">Adresse e-mail</label>
+    <mat-form-field>
+      <input id="mail" matInput formControlName="email" type="email" />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field">
+    <div class="password">
+      <label for="password">Mot de passe</label>
+      @if (signinForm.get('password')?.dirty && signinForm.controls['password'].invalid) {
+        @if (!signinForm.controls.password.getError('isLongEnough')) {
+          <mat-error>doit contenir au moins 8 caractères</mat-error>
+        } @else if (!signinForm.controls.password.getError('hasNumber')) {
+          <mat-error>doit contenir un nombre</mat-error>
+        } @else if (!signinForm.controls.password.getError('hasLowerCase')) {
+          <mat-error>doit contenir un minuscule</mat-error>
+        } @else if (!signinForm.controls.password.getError('hasUpperCase')) {
+          <mat-error>doit contenir un majuscule</mat-error>
+        } @else if (!signinForm.controls.password.getError('hasSymbol')) {
+          <mat-error>doit contenir un caractère spécial</mat-error>
+        }
+      }
+    </div>
+    <mat-form-field>
+      <input id="password" matInput formControlName="password" type="password" />
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">
+      S'inscrire
+    </button>
+  </div>
+</form>

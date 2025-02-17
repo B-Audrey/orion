@@ -1,0 +1,55 @@
+hr {
+  display: none;
+  @media (min-width: 768px) {
+    margin: 0;
+    display: block;
+  }
+}
+
+h1 {
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+  }
+}
+
+.back-button {
+  margin: 1em 0 0 1em;
+  width: 50px;
+  height: 50px;
+
+  & span {
+    font-size: 3em;
+  }
+
+  @media (min-width: 768px) {
+    position: absolute;
+    margin: 2em 0 0 2em;
+  }
+}
+
+form {
+  display: flex;
+  width: 80%;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media (min-width: 768px) {
+    width: 50%;
+    margin-top: 2em;
+  }
+}
+
+.mobile-display {
+  display: block;
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.desktop-display {
+  display: none;
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
