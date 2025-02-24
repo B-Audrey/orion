@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { UserActions } from '../../shared/store/user';
 
 @Component({
   selector: 'mdd-user-profile',
@@ -8,4 +10,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './user-profile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserProfileComponent {}
+export class UserProfileComponent {
+  #store = inject(Store);
+
+  logout() {
+    this.#store.dispatch(new UserActions.Logout());
+  }
+}

@@ -2,19 +2,31 @@
 @use 'styles/palette';
 @use 'styles/form';
 
+:root {
+  --primary-color: #7763c5;
+  --secondary-color: #e3b79a;
+  --success-color: #556b2fff;
+  --warning-color: #f44336;
+  --background-grey: #f5f5f5;
+}
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .mat-snack-bar-container.success {
-  background-color: darkolivegreen; /* Vert pour le succès */
+  background-color: var(--success-color);
   color: white;
 }
 
-.mat-snack-bar-container.error {
-  background-color: #f44336; /* Rouge pour l'erreur */
+.mat-snack-bar-container.logout {
+  background-color: var(--warning-color);
   color: white;
+}
+
+.logout {
+  color: var(--warning-color);
 }
 
 * {

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 export class Me {
-  static readonly type = '[User] init access token right after SSO redirection';
+  static readonly type = '[User] ask who am I';
 }
 
 export class Refresh {

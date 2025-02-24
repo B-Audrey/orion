@@ -5,7 +5,7 @@ import { provideStore } from '@ngxs/store';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './app/auth-interceptor';
-import { UserState } from './shared/store';
+import { UserState } from './shared';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';

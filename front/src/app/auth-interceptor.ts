@@ -12,7 +12,7 @@ import { catchError } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { ToastService } from '../shared/services/toast.service';
-import { UserState, UserActions } from '../shared/store';
+import { UserState, UserActions } from '../shared';
 
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
@@ -40,7 +40,7 @@ export const authInterceptor: HttpInterceptorFn = (
       case HttpStatusCode.Unauthorized:
         return _refreshAndRetry(request, next);
       case HttpStatusCode.InternalServerError:
-        toastService.error('Oups, erreur 500');
+        toastService.error('Erreur 500, le service ne répond pas');
         return throwError(() => err);
       case HttpStatusCode.GatewayTimeout:
         toastService.error('Le service ne répond pas');
