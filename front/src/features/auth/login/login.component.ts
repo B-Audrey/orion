@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { Router, RouterLink } from '@angular/router';
@@ -15,6 +15,7 @@ import { NgOptimizedImage } from '@angular/common';
   imports: [ReactiveFormsModule, MatInput, MatFormField, MatButton, RouterLink, NgOptimizedImage],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
   #fb = inject(FormBuilder);

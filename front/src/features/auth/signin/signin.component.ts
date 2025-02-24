@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatError, MatFormField } from '@angular/material/form-field';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { NgOptimizedImage } from '@angular/common';
   ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SigninComponent {
   #fb = inject(FormBuilder);
