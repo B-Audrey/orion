@@ -8,7 +8,7 @@ body {
 }
 
 .mat-snack-bar-container.success {
-  background-color: #4caf50; /* Vert pour le succès */
+  background-color: darkolivegreen; /* Vert pour le succès */
   color: white;
 }
 
@@ -19,9 +19,38 @@ body {
 
 * {
   font-family: Inter, sans-serif;
+  box-sizing: border-box;
+}
+
+p,
+span,
+a {
+  font-size: 1rem;
   font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  color: palette.$primary-500;
 }
 
 h1 {
   font-size: 24px;
+}
+
+.mobile-hidden {
+  display: none;
+  @media (min-width: 768px) {
+    display: unset;
+  }
+}
+
+.desktop-hidden {
+  @media (min-width: 768px) {
+    display: none;
+  }
 }
