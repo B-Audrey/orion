@@ -48,6 +48,13 @@ export class UserState {
     );
   }
 
+  @Action(UserActions.Login)
+  login$(ctx: StateContext<UserStateModel>, { username, password }: UserActions.Login) {
+    return this.#authService
+      .login$(username, password)
+      .pipe(tap(({ accessToken }) => ctx.patchState({ accessToken })));
+  }
+
   @Action(UserActions.Logout)
   logout$(ctx: StateContext<UserStateModel>) {
     return this.#authService.logout$().pipe(
@@ -57,15 +64,8 @@ export class UserState {
           accessToken: null,
         } as unknown as UserStateModel);
         this.#toastService.success('Vous êtes déconnecté');
-        return this.#router.navigate(['/login']);
+        return this.#router.navigate(['/auth/login']);
       }),
     );
-  }
-
-  @Action(UserActions.Login)
-  login$(ctx: StateContext<UserStateModel>, { username, password }: UserActions.Login) {
-    return this.#authService
-      .login$(username, password)
-      .pipe(tap(({ accessToken }) => ctx.patchState({ accessToken })));
   }
 }

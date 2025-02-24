@@ -48,9 +48,11 @@ export class SigninComponent {
       },
       error: (err: HttpErrorResponse) => {
         if (err.status === 400) {
-          this.#toastService.error('veuillez vérifier les informations saisies');
+          return this.#toastService.error('veuillez vérifier les informations saisies');
         } else if (err.status === 401) {
-          this.#toastService.error('Un compte avec cette adresse email existe déjà');
+          return this.#toastService.error('Un compte avec cette adresse email existe déjà');
+        } else if (err.status === 500) {
+          return this.#toastService.error('Erreur 500, le service ne répond pas');
         } else {
           this.#toastService.error('Une erreur est survenue, veuillez réessayer ultérieurement');
         }

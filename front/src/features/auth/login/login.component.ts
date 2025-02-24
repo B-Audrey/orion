@@ -3,11 +3,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { Router, RouterLink } from '@angular/router';
 import { ToastService } from '../../../shared/services/toast.service';
-import { UserActions } from '../../../shared/store';
+import { UserActions } from '../../../shared';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { NgOptimizedImage } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'mdd-login',
@@ -32,7 +33,10 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.#store.dispatch(new UserActions.Login(username, password)).subscribe({
         next: () => this.#router.navigate(['/']),
-        error: () => {
+        error: (e: HttpErrorResponse) => {
+          if (e.status === 500) {
+            return this.#toastService.error('Erreur 500, le service ne répond pas');
+          }
           this.#toastService.error('Connexion refusée, veuillez vérifier vos identifiants.');
         },
       });
