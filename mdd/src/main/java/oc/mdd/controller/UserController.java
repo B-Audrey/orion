@@ -52,81 +52,81 @@ public class UserController {
     @GetMapping("{userUuid}/topic-unsubscription/{topicUuid}")
     public ResponseEntity<?> removeTopic(HttpServletRequest request, @PathVariable String userUuid,
             @PathVariable String topicUuid) {
-            try {
-                UserEntity user = (UserEntity) request.getAttribute("user");
-                if (user == null) {
-                    String message = "You can only update your own account";
-                    throw new UnauthorizedException(message);
-                }
-                UserEntity updatedUser = userService.removeTopic(userUuid, topicUuid);
-                return ResponseEntity.ok(updatedUser);
-            } catch (Exception e) {
-                String message = e.getMessage();
-                log.warn(message);
+        try {
+            UserEntity user = (UserEntity) request.getAttribute("user");
+            if (user == null) {
+                String message = "You can only update your own account";
                 throw new UnauthorizedException(message);
             }
+            UserEntity updatedUser = userService.removeTopic(userUuid, topicUuid);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            log.warn(message);
+            throw new UnauthorizedException(message);
         }
-
-
-        @PostMapping
-        public ResponseEntity<?> signin (@RequestBody UserSigninDto userSigninDto){
-            try {
-                boolean isPasswordStrong = strongPasswordValidator.isPasswordValid(userSigninDto.getPassword());
-                if (!isPasswordStrong) {
-                    String message = "Password is not strong enough";
-                    log.warn(message);
-                    throw new BadRequestException(message);
-                }
-                UserEntity newUser = userService.registerUser(userSigninDto);
-                return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-            } catch (Exception e) {
-                String message = e.getMessage();
-                log.warn(message);
-                throw new UnauthorizedException(message);
-            }
-        }
-
-        @PutMapping("{uuid}")
-        public ResponseEntity<?> updateUser (HttpServletRequest request, @PathVariable String
-        uuid, @RequestBody UserUpdateDto userUpdateDto){
-            try {
-                UserEntity user = (UserEntity) request.getAttribute("user");
-                if (uuid == null || !uuid.equals(user.getUuid())) {
-                    String message = "You can only update your own account";
-                    throw new UnauthorizedException(message);
-                }
-                UserEntity updatedUser = userService.updateUser(uuid, userUpdateDto);
-                UserModel userModel = userService.convertToUserModel(updatedUser);
-                return ResponseEntity.ok(userModel);
-            } catch (Exception e) {
-                String message = e.getMessage();
-                log.warn(message);
-                throw new UnauthorizedException(message);
-            }
-        }
-
-        @PatchMapping("{uuid}/password")
-        public ResponseEntity<?> updatePassword (HttpServletRequest request, @PathVariable String
-        uuid, @RequestBody UserPasswordDto userPasswordDto){
-            try {
-                UserEntity user = (UserEntity) request.getAttribute("user");
-                if (uuid == null || !uuid.equals(user.getUuid())) {
-                    throw new ForbiddenException("You can only update your own password");
-                }
-                boolean isPasswordStrong = strongPasswordValidator.isPasswordValid(userPasswordDto.getNewPassword());
-                if (!isPasswordStrong) {
-                    String message = "Password is not strong enough";
-                    throw new BadRequestException(message);
-                }
-                userService.updatePassword(uuid, userPasswordDto);
-                Map<String, Object> message = new HashMap<>();
-                message.put("message", "ok");
-                return ResponseEntity.ok(message);
-            } catch (Exception e) {
-                String message = e.getMessage();
-                log.warn(message);
-                throw new ForbiddenException(message);
-            }
-        }
-
     }
+
+
+    @PostMapping("/new")
+    public ResponseEntity<?> signin(@RequestBody UserSigninDto userSigninDto) {
+        try {
+            boolean isPasswordStrong = strongPasswordValidator.isPasswordValid(userSigninDto.getPassword());
+            if (!isPasswordStrong) {
+                String message = "Password is not strong enough";
+                log.warn(message);
+                throw new BadRequestException(message);
+            }
+            UserEntity newUser = userService.registerUser(userSigninDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            log.warn(message);
+            throw new UnauthorizedException(message);
+        }
+    }
+
+    @PutMapping("{uuid}")
+    public ResponseEntity<?> updateUser(HttpServletRequest request, @PathVariable String
+            uuid, @RequestBody UserUpdateDto userUpdateDto) {
+        try {
+            UserEntity user = (UserEntity) request.getAttribute("user");
+            if (uuid == null || !uuid.equals(user.getUuid())) {
+                String message = "You can only update your own account";
+                throw new UnauthorizedException(message);
+            }
+            UserEntity updatedUser = userService.updateUser(uuid, userUpdateDto);
+            UserModel userModel = userService.convertToUserModel(updatedUser);
+            return ResponseEntity.ok(userModel);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            log.warn(message);
+            throw new UnauthorizedException(message);
+        }
+    }
+
+    @PatchMapping("{uuid}/password")
+    public ResponseEntity<?> updatePassword(HttpServletRequest request, @PathVariable String
+            uuid, @RequestBody UserPasswordDto userPasswordDto) {
+        try {
+            UserEntity user = (UserEntity) request.getAttribute("user");
+            if (uuid == null || !uuid.equals(user.getUuid())) {
+                throw new ForbiddenException("You can only update your own password");
+            }
+            boolean isPasswordStrong = strongPasswordValidator.isPasswordValid(userPasswordDto.getNewPassword());
+            if (!isPasswordStrong) {
+                String message = "Password is not strong enough";
+                throw new BadRequestException(message);
+            }
+            userService.updatePassword(uuid, userPasswordDto);
+            Map<String, Object> message = new HashMap<>();
+            message.put("message", "ok");
+            return ResponseEntity.ok(message);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            log.warn(message);
+            throw new ForbiddenException(message);
+        }
+    }
+
+}

@@ -13,7 +13,7 @@ export class UserService {
   }
 
   postUser$(user: User): Observable<User> {
-    return this.httpWithoutInterceptor.post<User>('/api/users', user);
+    return this.httpWithoutInterceptor.post<User>('/api/users/new', user);
   }
 
   putUser$(user: User): Observable<User> {
