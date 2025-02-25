@@ -17,10 +17,6 @@ public class TopicService {
 
     public Page<TopicEntity> getTopics(PaginationQueryDto pageDto) {
         Pageable pageable = PaginationUtil.createPageable(pageDto.getPage(), pageDto.getSize());
-        Page<TopicEntity> page = this.topicRepository.findAll(pageable);
-        page.getContent().forEach(topic -> {
-            topic.setUsers(null); // no need to send users here
-        });
-        return page;
+        return this.topicRepository.findAll(pageable);
     }
 }

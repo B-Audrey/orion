@@ -48,8 +48,13 @@ public class UserEntity implements UserDetails {
     @Column(name = "deleted_at")
     private LocalDateTime deleted_at;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<TopicEntity> topics;
+    @ManyToMany(fetch = FetchType.EAGER) // warn, topics become too heavy, think about refactoring here.
+    @JoinTable(
+            name = "user_topics",
+            joinColumns = @JoinColumn(name = "users_uuid"),
+            inverseJoinColumns = @JoinColumn(name = "topics_uuid")
+    )
+    private List<TopicEntity> topics;
 
     @PreRemove
     protected void onDelete() {

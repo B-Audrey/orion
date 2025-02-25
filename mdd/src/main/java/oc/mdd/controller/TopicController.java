@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import oc.mdd.dto.PaginationQueryDto;
 import oc.mdd.entity.TopicEntity;
 import oc.mdd.model.PageModel;
+import oc.mdd.model.error.BadRequestException;
 import oc.mdd.service.TopicService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -26,16 +27,22 @@ public class TopicController {
     @GetMapping
     public ResponseEntity<?> getAllTopics(@RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size) {
-        PaginationQueryDto pageDto = new PaginationQueryDto(page, size);
-        Page<TopicEntity> topics = this.topicService.getTopics(pageDto);
-        PageModel<TopicEntity> topicsPage = new PageModel<>(
-                topics.getContent(),
-                new PageModel.Pagination(
-                        topics.getTotalElements(),
-                        topics.getNumber(),
-                        topics.getSize()
-                )
-        );
-        return ResponseEntity.ok(topicsPage);
+        try {
+            PaginationQueryDto pageDto = new PaginationQueryDto(page, size);
+            Page<TopicEntity> topics = this.topicService.getTopics(pageDto);
+            PageModel<TopicEntity> topicsPage = new PageModel<>(
+                    topics.getContent(),
+                    new PageModel.Pagination(
+                            topics.getTotalElements(),
+                            topics.getNumber(),
+                            topics.getSize()
+                    )
+            );
+            return ResponseEntity.ok(topicsPage);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            log.warn(message);
+            throw new BadRequestException(message);
+        }
     }
 }

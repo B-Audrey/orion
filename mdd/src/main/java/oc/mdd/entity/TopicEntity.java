@@ -1,5 +1,6 @@
 package oc.mdd.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Entity
 @RequiredArgsConstructor
 @Table(name = "topics")
+@JsonIgnoreProperties("users")  // Ignore la relation inverse pour éviter les références circulaires
 @EntityListeners(AuditingEntityListener.class) // Pour les champs created_at et updated_at
 public class TopicEntity {
 
@@ -38,11 +40,8 @@ public class TopicEntity {
     @Column(name = "deleted_at")
     private LocalDateTime deleted_at;
 
-    @ManyToMany
-    @JoinTable(
-            name = "topics_users",
-            joinColumns = @JoinColumn(name = "topics_uuid"),
-            inverseJoinColumns = @JoinColumn(name = "users_uuid")
-    )
+    @ManyToMany(mappedBy = "topics")
     private Set<UserEntity> users;
+
+
 }
