@@ -1,1 +1,17 @@
-<p>topics works!</p>
+@if (viewModel$ | async; as topicPage) {
+  <div class="topics-container">
+    @for (topics of topicPage.data; track topics.uuid) {
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ topics.label }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ topics.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary">S'abonner</button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+}
