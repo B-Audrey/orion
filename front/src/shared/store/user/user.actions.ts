@@ -20,3 +20,9 @@ export class Login {
     public password: string,
   ) {}
 }
+
+export class Update {
+  static readonly type = '[User] Update user';
+
+  constructor(public user: { name: string; email: string }) {}
+}

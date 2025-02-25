@@ -4,10 +4,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import oc.mdd.dto.UserSigninDto;
+import oc.mdd.dto.UserUpdateDto;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.model.UserModel;
 import oc.mdd.repository.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +58,11 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public UserEntity getUserByName(String username) {
-        return userRepository.findByName(username);
+
+    public UserEntity updateUser(String uuid, UserUpdateDto userUpdateDto) {
+        UserEntity user = userRepository.findByUuid(uuid);
+        user.setName(userUpdateDto.getName());
+        user.setEmail(userUpdateDto.getEmail());
+        return userRepository.save(user);
     }
 }

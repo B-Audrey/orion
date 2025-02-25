@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
+import { UserService } from '../../services/user.service';
 
 export interface UserStateModel {
   user?: User;
@@ -20,6 +21,7 @@ export interface UserStateModel {
 @Injectable()
 export class UserState {
   readonly #authService = inject(AuthService);
+  readonly #userService = inject(UserService);
   readonly #router = inject(Router);
   readonly #toastService = inject(ToastService);
 
@@ -67,5 +69,19 @@ export class UserState {
         return this.#router.navigate(['/auth/login']);
       }),
     );
+  }
+
+  @Action(UserActions.Update)
+  update$(ctx: StateContext<UserStateModel>, { user }: UserActions.Update) {
+    if (!ctx.getState().user) {
+      return this.#router.navigate(['/auth/login']);
+    } else {
+      return this.#userService
+        .putUser$({
+          ...user,
+          uuid: ctx.getState().user?.uuid,
+        })
+        .pipe(tap(user => ctx.patchState({ user })));
+    }
   }
 }
