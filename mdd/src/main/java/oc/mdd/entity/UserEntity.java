@@ -3,7 +3,7 @@ package oc.mdd.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.validator.constraints.UniqueElements;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,6 +17,7 @@ import java.util.List;
 
 @Data
 @Entity
+@RequiredArgsConstructor
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class) // Pour les champs created_at et updated_at
 public class UserEntity implements UserDetails {
@@ -45,6 +46,14 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "deleted_at")
     private LocalDateTime deleted_at;
+
+    public UserEntity(String uuid, String email, String name, String createdAt, String updatedAt) {
+        this.uuid = uuid;
+        this.email = email;
+        this.name = name;
+        this.created_at = LocalDateTime.parse(createdAt);
+        this.updated_at = LocalDateTime.parse(updatedAt);
+    }
 
     @PreRemove
     protected void onDelete() {

@@ -1,1 +1,26 @@
-<p class="logout" (click)="logout()" (keydown)="logout()" [tabIndex]="0">Se déconnecter</p>
+<h1>Profil utilisateur</h1>
+<form [formGroup]="updateForm" (ngSubmit)="updateUser()">
+  <div class="form-field">
+    <mat-form-field>
+      <mat-label>username</mat-label>
+      <input matInput formControlName="name" type="text" />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field">
+    <mat-form-field>
+      <mat-label>{{ 'email@email.fr' }}</mat-label>
+      <input matInput formControlName="email" type="email" />
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="primary" [disabled]="!updateForm.valid">Sauvegarder</button>
+</form>
+<div class="actions">
+  <span (click)="changePassword()" (keydown)="changePassword()" [tabIndex]="0"
+    >Modifier mon mot de passe</span
+  >
+  <span class="warn-color" (click)="logout()" (keydown)="logout()" [tabIndex]="0"
+    >Se déconnecter</span
+  >
+</div>

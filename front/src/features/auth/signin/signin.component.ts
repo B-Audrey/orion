@@ -41,7 +41,7 @@ export class SigninComponent {
 
   signin() {
     const form = this.signinForm.getRawValue();
-    this.#userService.signin$(form).subscribe({
+    this.#userService.postUser$(form).subscribe({
       next: user => {
         this.#toastService.success(`Bienvenue ${user.name}, ton compte à bien été créé`);
         this.#router.navigate(['auth', 'login']);
