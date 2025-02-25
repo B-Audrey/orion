@@ -26,3 +26,12 @@ export class Update {
 
   constructor(public user: { name: string; email: string }) {}
 }
+
+export class ChangePassword {
+  static readonly type = '[User] Change password';
+
+  constructor(
+    public actualPassword: string,
+    public newPassword: string,
+  ) {}
+}

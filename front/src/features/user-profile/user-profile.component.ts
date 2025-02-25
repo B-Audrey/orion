@@ -6,7 +6,8 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { User } from '../../shared/interfaces/user';
-
+import { MatDialog } from '@angular/material/dialog';
+import { UserProfileDialogComponent } from './user-profile-dialog.component';
 @Component({
   selector: 'mdd-user-profile',
   standalone: true,
@@ -18,6 +19,7 @@ import { User } from '../../shared/interfaces/user';
 export class UserProfileComponent implements OnInit {
   #store = inject(Store);
   #fb = inject(FormBuilder);
+  dialog = inject(MatDialog);
 
   updateForm = this.#fb.nonNullable.group({
     name: ['' as string, Validators.required],
@@ -42,5 +44,9 @@ export class UserProfileComponent implements OnInit {
         { emitEvent: false },
       );
     });
+  }
+
+  changePassword() {
+    this.dialog.open(UserProfileDialogComponent);
   }
 }

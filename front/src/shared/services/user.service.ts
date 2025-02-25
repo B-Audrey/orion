@@ -19,4 +19,8 @@ export class UserService {
   putUser$(user: User): Observable<User> {
     return this.http.put<User>(`/api/users/${user.uuid}`, user);
   }
+
+  patchPassword$(userUuid: string, param: { actualPassword: string; newPassword: string }) {
+    return this.http.patch(`/api/users/${userUuid}/password`, param);
+  }
 }

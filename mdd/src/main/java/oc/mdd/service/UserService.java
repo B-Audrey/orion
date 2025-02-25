@@ -3,10 +3,12 @@ package oc.mdd.service;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
+import oc.mdd.dto.UserPasswordDto;
 import oc.mdd.dto.UserSigninDto;
 import oc.mdd.dto.UserUpdateDto;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.model.UserModel;
+import oc.mdd.model.error.ForbiddenException;
 import oc.mdd.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -64,5 +66,15 @@ public class UserService {
         user.setName(userUpdateDto.getName());
         user.setEmail(userUpdateDto.getEmail());
         return userRepository.save(user);
+    }
+
+    public void updatePassword(String uuid, UserPasswordDto userPasswordDto) throws Exception {
+        UserEntity user = userRepository.findByUuid(uuid);
+        // compare old password before saving new one
+        if (!passwordEncoder.matches(userPasswordDto.getActualPassword(), user.getPassword())) {
+            throw new Exception("Old password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(userPasswordDto.getNewPassword()));
+        userRepository.save(user);
     }
 }

@@ -16,6 +16,11 @@
 
   <button mat-raised-button color="primary" [disabled]="!updateForm.valid">Sauvegarder</button>
 </form>
-<div class="logout">
-  <span (click)="logout()" (keydown)="logout()" [tabIndex]="0">Se déconnecter</span>
+<div class="actions">
+  <span (click)="changePassword()" (keydown)="changePassword()" [tabIndex]="0"
+    >Modifier mon mot de passe</span
+  >
+  <span class="warn-color" (click)="logout()" (keydown)="logout()" [tabIndex]="0"
+    >Se déconnecter</span
+  >
 </div>

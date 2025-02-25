@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import * as UserActions from './user.actions';
 import { catchError, tap } from 'rxjs/operators';
-import { Observable, switchMap } from 'rxjs';
+import { EMPTY, Observable, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { AuthService } from '../../services/auth.service';
@@ -81,7 +81,37 @@ export class UserState {
           ...user,
           uuid: ctx.getState().user?.uuid,
         })
-        .pipe(tap(user => ctx.patchState({ user })));
+        .pipe(
+          catchError(() => {
+            this.#toastService.error('Erreur lors de la mise à jour de votre profil');
+            return EMPTY;
+          }),
+          tap(user => {
+            ctx.patchState({ user });
+            this.#toastService.success('Votre profil a été mis à jour');
+          }),
+        );
     }
+  }
+
+  @Action(UserActions.ChangePassword)
+  patchPassword$(
+    ctx: StateContext<UserStateModel>,
+    { actualPassword, newPassword }: UserActions.ChangePassword,
+  ) {
+    return this.#userService
+      .patchPassword$(ctx.getState().user?.uuid || '', {
+        actualPassword,
+        newPassword,
+      })
+      .pipe(
+        catchError(() => {
+          this.#toastService.error('Erreur lors de la mise à jour de votre mot de passe');
+          return EMPTY;
+        }),
+        tap(() => {
+          this.#toastService.success('Votre mot de passe a été mis à jour');
+        }),
+      );
   }
 }
