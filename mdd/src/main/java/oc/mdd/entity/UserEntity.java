@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -47,13 +48,13 @@ public class UserEntity implements UserDetails {
     @Column(name = "deleted_at")
     private LocalDateTime deleted_at;
 
-    public UserEntity(String uuid, String email, String name, String createdAt, String updatedAt) {
-        this.uuid = uuid;
-        this.email = email;
-        this.name = name;
-        this.created_at = LocalDateTime.parse(createdAt);
-        this.updated_at = LocalDateTime.parse(updatedAt);
-    }
+    @ManyToMany(fetch = FetchType.EAGER) // warn, topics become too heavy, think about refactoring here.
+    @JoinTable(
+            name = "user_topics",
+            joinColumns = @JoinColumn(name = "users_uuid"),
+            inverseJoinColumns = @JoinColumn(name = "topics_uuid")
+    )
+    private List<TopicEntity> topics;
 
     @PreRemove
     protected void onDelete() {

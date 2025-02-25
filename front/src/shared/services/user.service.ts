@@ -23,4 +23,12 @@ export class UserService {
   patchPassword$(userUuid: string, param: { actualPassword: string; newPassword: string }) {
     return this.http.patch(`/api/users/${userUuid}/password`, param);
   }
+
+  addTopic$(userUuid: string, topicUuid: string) {
+    return this.http.get<User>(`/api/users/${userUuid}/topic-subscription/${topicUuid}`);
+  }
+
+  removeTopic$(userUuid: string, topicUuid: string) {
+    return this.http.get<User>(`/api/users/${userUuid}/topic-unsubscription/${topicUuid}`);
+  }
 }

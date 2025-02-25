@@ -114,4 +114,32 @@ export class UserState {
         }),
       );
   }
+
+  @Action(UserActions.AddTopic)
+  addTopic$(ctx: StateContext<UserStateModel>, { topicUuid }: UserActions.AddTopic) {
+    return this.#userService.addTopic$(ctx.getState().user?.uuid || '', topicUuid).pipe(
+      catchError(() => {
+        this.#toastService.error("Erreur lors de l'ajout du thème");
+        return EMPTY;
+      }),
+      tap(user => {
+        ctx.patchState({ user });
+        this.#toastService.success('Le thème vous a bien été ajouté');
+      }),
+    );
+  }
+
+  @Action(UserActions.RemoveTopic)
+  removeTopic$(ctx: StateContext<UserStateModel>, { topicUuid }: UserActions.RemoveTopic) {
+    return this.#userService.removeTopic$(ctx.getState().user?.uuid || '', topicUuid).pipe(
+      catchError(() => {
+        this.#toastService.error('Erreur lors de la suppression du thème');
+        return EMPTY;
+      }),
+      tap(user => {
+        ctx.patchState({ user });
+        this.#toastService.success('Le thème vous a bien été supprimé');
+      }),
+    );
+  }
 }

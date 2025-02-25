@@ -35,3 +35,15 @@ export class ChangePassword {
     public newPassword: string,
   ) {}
 }
+
+export class AddTopic {
+  static readonly type = '[User] Add topic';
+
+  constructor(public topicUuid: string) {}
+}
+
+export class RemoveTopic {
+  static readonly type = '[User] Remove topic';
+
+  constructor(public topicUuid: string) {}
+}

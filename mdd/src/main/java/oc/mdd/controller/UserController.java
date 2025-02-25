@@ -30,7 +30,45 @@ public class UserController {
     private final UserService userService;
     private final Utils strongPasswordValidator;
 
-    @PostMapping("new")
+    @GetMapping("{userUuid}/topic-subscription/{topicUuid}")
+    public ResponseEntity<?> addTopic(HttpServletRequest request, @PathVariable String userUuid,
+            @PathVariable String topicUuid) {
+        try {
+            UserEntity user = (UserEntity) request.getAttribute("user");
+            if (userUuid == null || !userUuid.equals(user.getUuid())) {
+                String message = "You can only update your own account";
+                throw new UnauthorizedException(message);
+            }
+            UserEntity updatedUser = userService.addTopic(userUuid, topicUuid);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            log.warn(message);
+            throw new UnauthorizedException(message);
+        }
+
+    }
+
+    @GetMapping("{userUuid}/topic-unsubscription/{topicUuid}")
+    public ResponseEntity<?> removeTopic(HttpServletRequest request, @PathVariable String userUuid,
+            @PathVariable String topicUuid) {
+        try {
+            UserEntity user = (UserEntity) request.getAttribute("user");
+            if (user == null) {
+                String message = "You can only update your own account";
+                throw new UnauthorizedException(message);
+            }
+            UserEntity updatedUser = userService.removeTopic(userUuid, topicUuid);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            log.warn(message);
+            throw new UnauthorizedException(message);
+        }
+    }
+
+
+    @PostMapping("/new")
     public ResponseEntity<?> signin(@RequestBody UserSigninDto userSigninDto) {
         try {
             boolean isPasswordStrong = strongPasswordValidator.isPasswordValid(userSigninDto.getPassword());
@@ -49,7 +87,8 @@ public class UserController {
     }
 
     @PutMapping("{uuid}")
-    public ResponseEntity<?> updateUser(HttpServletRequest request, @PathVariable String uuid, @RequestBody UserUpdateDto userUpdateDto) {
+    public ResponseEntity<?> updateUser(HttpServletRequest request, @PathVariable String
+            uuid, @RequestBody UserUpdateDto userUpdateDto) {
         try {
             UserEntity user = (UserEntity) request.getAttribute("user");
             if (uuid == null || !uuid.equals(user.getUuid())) {
@@ -67,7 +106,8 @@ public class UserController {
     }
 
     @PatchMapping("{uuid}/password")
-     public ResponseEntity<?> updatePassword(HttpServletRequest request, @PathVariable String uuid, @RequestBody UserPasswordDto userPasswordDto) {
+    public ResponseEntity<?> updatePassword(HttpServletRequest request, @PathVariable String
+            uuid, @RequestBody UserPasswordDto userPasswordDto) {
         try {
             UserEntity user = (UserEntity) request.getAttribute("user");
             if (uuid == null || !uuid.equals(user.getUuid())) {
