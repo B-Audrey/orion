@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { UserActions, UserState } from '../../shared/store/user';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,15 +8,40 @@ import { MatButton } from '@angular/material/button';
 import { User } from '../../shared/interfaces/user';
 import { MatDialog } from '@angular/material/dialog';
 import { UserProfileDialogComponent } from './user-profile-dialog.component';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardTitle,
+} from '@angular/material/card';
+import { tap } from 'rxjs/operators';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { AsyncPipe } from '@angular/common';
+
 @Component({
   selector: 'mdd-user-profile',
   standalone: true,
-  imports: [FormsModule, MatFormField, MatInput, ReactiveFormsModule, MatButton, MatLabel],
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatInput,
+    ReactiveFormsModule,
+    MatButton,
+    MatLabel,
+    MatCard,
+    MatCardActions,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
+    MatProgressSpinner,
+    AsyncPipe,
+  ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent {
   #store = inject(Store);
   #fb = inject(FormBuilder);
   dialog = inject(MatDialog);
@@ -34,19 +59,22 @@ export class UserProfileComponent implements OnInit {
     this.#store.dispatch(new UserActions.Update(this.updateForm.value as User));
   }
 
-  ngOnInit(): void {
-    this.#store.select(UserState.getMe).subscribe(user => {
-      this.updateForm.patchValue(
-        {
-          name: user?.name || '',
-          email: user?.email || '',
-        },
-        { emitEvent: false },
-      );
-    });
-  }
+  user$ = this.#store
+    .select(UserState.getMe)
+    .pipe(
+      tap((user: User | undefined) =>
+        this.updateForm.patchValue(
+          { name: user?.name || '', email: user?.email || '' },
+          { emitEvent: false },
+        ),
+      ),
+    );
 
   changePassword() {
     this.dialog.open(UserProfileDialogComponent);
+  }
+
+  removeTopic(uuid: string) {
+    this.#store.dispatch(new UserActions.RemoveTopic(uuid));
   }
 }
