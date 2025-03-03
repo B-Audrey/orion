@@ -8,6 +8,7 @@ import { User } from '../../interfaces/user';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { UserService } from '../../services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface UserStateModel {
   user?: User;
@@ -33,6 +34,11 @@ export class UserState {
   @Selector()
   static getMe(state: UserStateModel): User | undefined {
     return state?.user?.uuid ? state.user : undefined;
+  }
+
+  @Selector()
+  static getTopics(state: UserStateModel): string[] {
+    return state.user?.topics?.map(topic => topic.uuid) || [];
   }
 
   @Action(UserActions.Me)
@@ -82,8 +88,14 @@ export class UserState {
           uuid: ctx.getState().user?.uuid,
         })
         .pipe(
-          catchError(() => {
-            this.#toastService.error('Erreur lors de la mise à jour de votre profil');
+          catchError((e: HttpErrorResponse) => {
+            if (e.status === 403) {
+              this.#toastService.error(
+                "Vous ne pouvez pas utiliser des informations déjà existantes, veuillez en choisir d'autres",
+              );
+            } else {
+              this.#toastService.error('Erreur lors de la mise à jour de votre profil');
+            }
             return EMPTY;
           }),
           tap(user => {

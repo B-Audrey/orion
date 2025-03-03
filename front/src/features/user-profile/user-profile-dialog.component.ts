@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserActions } from '../../shared';
 import { Store } from '@ngxs/store';
-import { _isPasswordStrongValidator } from '../../shared/utils';
+import { _isPasswordStrongValidator } from '../../shared';
 import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';

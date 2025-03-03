@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oc.mdd.config.JwtUtils;
+import oc.mdd.utils.JwtUtils;
 import oc.mdd.dto.AuthLoginDto;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.model.*;

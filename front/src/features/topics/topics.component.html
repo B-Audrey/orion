@@ -1,29 +1,7 @@
-@if (userTopics$ | async; as userTopics) {
-  <div class="topics-container">
-    @if (viewModel$ | async; as topicPage) {
-      @for (topic of topicPage.data; track topic.uuid) {
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>{{ topic.label }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ topic.description }}</p>
-          </mat-card-content>
-          <mat-card-actions>
-            @if (userTopics.includes(topic.uuid)) {
-              <button mat-raised-button color="accent" (click)="removeTopic(topic.uuid)">
-                Se désabonner
-              </button>
-            } @else {
-              <button mat-raised-button color="primary" (click)="addTopic(topic.uuid)">
-                S'abonner
-              </button>
-            }
-          </mat-card-actions>
-        </mat-card>
-      }
+<div class="topics-container">
+  @if (viewModel$ | async; as topicPage) {
+    @for (topic of topicPage.data; track topic.uuid) {
+      <mdd-topic-card [topic]="topic" />
     }
-  </div>
-} @else {
-  <mat-spinner></mat-spinner>
-}
+  }
+</div>

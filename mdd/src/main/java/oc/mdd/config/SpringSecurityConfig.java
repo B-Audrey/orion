@@ -3,6 +3,7 @@ package oc.mdd.config;
 import lombok.RequiredArgsConstructor;
 import oc.mdd.filter.JwtFilter;
 import oc.mdd.service.UserService;
+import oc.mdd.utils.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
