@@ -66,7 +66,15 @@ public class UserService {
     }
 
 
-    public UserEntity updateUser(String uuid, UserUpdateDto userUpdateDto) {
+    public UserEntity updateUser(String uuid, UserUpdateDto userUpdateDto) throws Exception {
+        UserEntity isFoundByEmail = userRepository.findByEmail(userUpdateDto.getEmail());
+        if(isFoundByEmail != null && !isFoundByEmail.getUuid().equals(uuid)) {
+            throw new Exception("Email Already Exists");
+        }
+        UserEntity isFoundByName = userRepository.findByName(userUpdateDto.getName());
+        if(isFoundByName != null && !isFoundByName.getUuid().equals(uuid)) {
+            throw new Exception("Name Already Exists");
+        }
         UserEntity user = userRepository.findByUuid(uuid);
         user.setName(userUpdateDto.getName());
         user.setEmail(userUpdateDto.getEmail());

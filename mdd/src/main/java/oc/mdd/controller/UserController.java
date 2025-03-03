@@ -12,7 +12,7 @@ import oc.mdd.model.error.BadRequestException;
 import oc.mdd.model.error.ForbiddenException;
 import oc.mdd.model.error.UnauthorizedException;
 import oc.mdd.service.UserService;
-import oc.mdd.utils.Utils;
+import oc.mdd.utils.PasswordUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +28,7 @@ import java.util.Map;
 @Validated
 public class UserController {
     private final UserService userService;
-    private final Utils strongPasswordValidator;
+    private final PasswordUtil strongPasswordValidator;
 
     @GetMapping("{userUuid}/topic-subscription/{topicUuid}")
     public ResponseEntity<?> addTopic(HttpServletRequest request, @PathVariable String userUuid,
@@ -93,7 +93,7 @@ public class UserController {
             UserEntity user = (UserEntity) request.getAttribute("user");
             if (uuid == null || !uuid.equals(user.getUuid())) {
                 String message = "You can only update your own account";
-                throw new UnauthorizedException(message);
+                throw new ForbiddenException(message);
             }
             UserEntity updatedUser = userService.updateUser(uuid, userUpdateDto);
             UserModel userModel = userService.convertToUserModel(updatedUser);
@@ -101,7 +101,7 @@ public class UserController {
         } catch (Exception e) {
             String message = e.getMessage();
             log.warn(message);
-            throw new UnauthorizedException(message);
+            throw new ForbiddenException(message);
         }
     }
 

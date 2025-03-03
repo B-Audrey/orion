@@ -3,7 +3,7 @@ package oc.mdd.utils;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Utils {
+public class PasswordUtil {
 
     public boolean isPasswordValid(String password) {
         // Vérifie la présence d'au moins une minuscule, une majuscule, un chiffre et un caractère spécial

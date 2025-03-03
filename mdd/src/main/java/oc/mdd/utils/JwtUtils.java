@@ -1,4 +1,4 @@
-package oc.mdd.config;
+package oc.mdd.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
