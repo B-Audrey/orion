@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oc.mdd.config.CustomUserDetailsService;
+import oc.mdd.model.error.UnauthorizedException;
 import oc.mdd.utils.JwtUtils;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.service.UserService;
@@ -53,7 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     UserEntity connectedUser = userService.getUserByEmail(useremail);
                     req.setAttribute("user", connectedUser);
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new UnauthorizedException(e.getMessage());
                 }
 
             }

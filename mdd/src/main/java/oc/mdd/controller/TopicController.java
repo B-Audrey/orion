@@ -25,10 +25,12 @@ public class TopicController {
     private final TopicService topicService;
 
     @GetMapping
-    public ResponseEntity<?> getAllTopics(@RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size) {
+    public ResponseEntity<?> getAllTopics(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String sort) {
         try {
-            PaginationQueryDto pageDto = new PaginationQueryDto(page, size);
+            PaginationQueryDto pageDto = new PaginationQueryDto(page, size, sort);
             Page<TopicEntity> topics = this.topicService.getTopics(pageDto);
             PageModel<TopicEntity> topicsPage = new PageModel<>(
                     topics.getContent(),

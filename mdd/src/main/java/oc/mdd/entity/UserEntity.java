@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -38,15 +37,15 @@ public class UserEntity implements UserDetails {
     private String password;
 
     @CreatedDate
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime created_at;
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updated_at;
+    @Column()
+    private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at")
-    private LocalDateTime deleted_at;
+    @Column()
+    private LocalDateTime deletedAt;
 
     @ManyToMany(fetch = FetchType.EAGER) // warn, topics become too heavy, think about refactoring here.
     @JoinTable(
@@ -56,9 +55,17 @@ public class UserEntity implements UserDetails {
     )
     private List<TopicEntity> topics;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<PostEntity> posts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<CommentEntity> comments;
+
     @PreRemove
     protected void onDelete() {
-        deleted_at = LocalDateTime.now();
+        deletedAt = LocalDateTime.now();
     }
 
     @JsonIgnore

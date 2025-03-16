@@ -4,7 +4,7 @@ import * as UserActions from './user.actions';
 import { catchError, tap } from 'rxjs/operators';
 import { EMPTY, Observable, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
-import { User } from '../../interfaces/user';
+import { User } from '../../interfaces';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { UserService } from '../../services/user.service';

@@ -1,10 +1,10 @@
 @if (userTopics$ | async; as userTopics) {
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ topic().label || '' }}</mat-card-title>
+      <mat-card-title>{{ topic().label || 'Label non renseigné' }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>{{ topic()?.description || '' }}</p>
+      <p>{{ topic().description || 'Description non renseignée' }}</p>
     </mat-card-content>
     <mat-card-actions>
       @if (userTopics.includes(topic().uuid)) {

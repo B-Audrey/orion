@@ -6,11 +6,11 @@ import java.util.List;
 
 @Data
 public class PageModel<T> {
-    private List<T> data;
+    private List<T> content;
     private Pagination pagination;
 
     public PageModel(List<T> data, Pagination pagination) {
-        this.data = data;
+        this.content = data;
         this.pagination = pagination;
     }
 

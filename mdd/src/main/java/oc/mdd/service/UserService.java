@@ -1,8 +1,5 @@
 package oc.mdd.service;
 
-import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import oc.mdd.dto.UserPasswordDto;
 import oc.mdd.dto.UserSigninDto;
@@ -10,7 +7,6 @@ import oc.mdd.dto.UserUpdateDto;
 import oc.mdd.entity.TopicEntity;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.model.UserModel;
-import oc.mdd.model.error.ForbiddenException;
 import oc.mdd.repository.TopicRepository;
 import oc.mdd.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,8 +27,8 @@ public class UserService {
                              user.getEmail(),
                              user.getName(),
                              user.getTopics(),
-                             user.getCreated_at(),
-                             user.getUpdated_at());
+                             user.getCreatedAt(),
+                             user.getUpdatedAt());
     }
 
     public UserEntity getUserByEmail(String email) throws Exception {

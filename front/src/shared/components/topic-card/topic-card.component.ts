@@ -8,7 +8,7 @@ import {
 } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { Store } from '@ngxs/store';
-import { Topic } from '../../interfaces/topic';
+import { Topic } from '../../interfaces';
 import { UserState, UserActions } from '../../store/user';
 import { AsyncPipe } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';

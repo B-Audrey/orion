@@ -2,6 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { User } from '../interfaces/user';
 import { Observable } from 'rxjs';
+import { Page, PageQueryParams } from '../interfaces';
+import { Post } from '../interfaces/post';
+import { parsePaginationParams } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -30,5 +33,9 @@ export class UserService {
 
   removeTopic$(userUuid: string, topicUuid: string) {
     return this.http.get<User>(`/api/users/${userUuid}/topic-unsubscription/${topicUuid}`);
+  }
+
+  getUserFeed$(params: PageQueryParams): Observable<Page<Post>> {
+    return this.http.get<Page<Post>>(`/api/users/my-feed${parsePaginationParams(params)}`);
   }
 }

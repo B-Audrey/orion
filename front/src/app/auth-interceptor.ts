@@ -11,8 +11,7 @@ import { EMPTY, first, Observable, switchMap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { Router } from '@angular/router';
-import { ToastService } from '../shared/services/toast.service';
-import { UserState, UserActions } from '../shared';
+import { UserState, UserActions, ToastService } from '../shared';
 
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
