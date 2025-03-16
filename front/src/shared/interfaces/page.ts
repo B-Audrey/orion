@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-//need to disable unused var besause enum is read as un used
+//need to disable unused var because enum is read as un used
 
 export interface Page<T> {
   content: T[];

@@ -5,6 +5,9 @@ import oc.mdd.dto.PaginationQueryDto;
 import oc.mdd.dto.PostCreationDto;
 import oc.mdd.entity.PostEntity;
 import oc.mdd.entity.TopicEntity;
+import oc.mdd.model.PostModel;
+import oc.mdd.model.TopicModel;
+import oc.mdd.model.UserModel;
 import oc.mdd.repository.PostRepository;
 import oc.mdd.utils.PaginationUtil;
 import org.springframework.data.domain.Page;
@@ -19,22 +22,19 @@ public class PostService {
     private final TopicService topicService;
     private final UserService userService;
 
-//    public PostModel convertToModel(PostEntity postEntity) {
-//        UserModel userModel = this.userService.convertToUserModel(postEntity.getUser());
-//        TopicModel topicModel = this.topicService.convertToModel(postEntity.getTopic());
-//        PostModel postModel = new PostModel(
-//                postEntity.getUuid(),
-//                postEntity.getTitle(),
-//                postEntity.getContent(),
-//                userModel,
-//                topicModel,
-//                postEntity.getCreated_at(),
-//                postEntity.getUpdated_at(),
-//                postEntity.getDeleted_at()
-//
-//        );
-//        return postModel;
-//    }
+    public PostModel convertToModel(PostEntity postEntity) {
+        return new PostModel(
+                postEntity.getUuid(),
+                postEntity.getTitle(),
+                postEntity.getContent(),
+                this.topicService.convertToTopicModel(postEntity.getTopic()),
+                this.userService.convertToUserModel(postEntity.getUser()),
+                postEntity.getCreatedAt(),
+                postEntity.getUpdatedAt(),
+                postEntity.getDeletedAt()
+
+        );
+    }
 
     public PostEntity findByUuid(String uuid) {
         return this.postRepository.findByUuid(uuid);
@@ -52,6 +52,7 @@ public class PostService {
     public Page<PostEntity> getUserFeed(String uuid, PaginationQueryDto pageDto) {
         Pageable pageable = PaginationUtil.createPageable(pageDto.getPage(), pageDto.getSize(), pageDto.getSort());
         return postRepository.findUserFeed(uuid, pageable);
+
     }
 }
 

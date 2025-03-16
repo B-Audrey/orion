@@ -25,34 +25,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("my-feed")
-    public ResponseEntity<?> getAllPosts(
-            HttpServletRequest request,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
-            @RequestParam(required = false) String sort)
-            {
-        try {
-            UserEntity user = (UserEntity) request.getAttribute("user");
-            PaginationQueryDto pageDto = new PaginationQueryDto(page, size, sort);
-            Page<PostEntity> topics = this.postService.getUserFeed(user.getUuid(), pageDto);
 
-            PageModel<PostEntity> topicsPage = new PageModel<PostEntity>(
-                    topics.getContent(),
-                    new PageModel.Pagination(
-                            topics.getTotalElements(),
-                            topics.getNumber(),
-                            topics.getSize()
-                    )
-            );
-
-            return ResponseEntity.ok(topicsPage);
-        } catch (Exception e) {
-            String message = e.getMessage();
-            log.warn(message);
-            throw new BadRequestException(message);
-        }
-    }
 
     @GetMapping("{uuid}")
     public ResponseEntity<?> getPost(

@@ -10,6 +10,7 @@ import oc.mdd.dto.UserUpdateDto;
 import oc.mdd.entity.PostEntity;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.model.PageModel;
+import oc.mdd.model.PostModel;
 import oc.mdd.model.UserModel;
 import oc.mdd.model.error.BadRequestException;
 import oc.mdd.model.error.ForbiddenException;
@@ -24,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -73,24 +75,29 @@ public class UserController {
         }
     }
 
-    @GetMapping("{userUuid}/feed")
-    public ResponseEntity<?> getUserFeed(
+    @GetMapping("my-feed")
+    public ResponseEntity<?> getAllPosts(
+            HttpServletRequest request,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
-            @RequestParam(required = false) String sort,
-            @PathVariable String userUuid) {
+            @RequestParam(required = false) String sort) {
         try {
+            UserEntity user = (UserEntity) request.getAttribute("user");
             PaginationQueryDto pageDto = new PaginationQueryDto(page, size, sort);
-            Page<PostEntity> topics = this.postService.getUserFeed(userUuid, pageDto);
-            PageModel<PostEntity> topicsPage = new PageModel<>(
-                    topics.getContent(),
+            Page<PostEntity> postEntityPage = this.postService.getUserFeed(user.getUuid(), pageDto);
+            List<PostEntity> postModelContent = postEntityPage.getContent();
+            List<PostModel> postModels = postModelContent.stream()
+                    .map(postService::convertToModel)
+                    .toList();
+            PageModel<PostModel> postModelPage = new PageModel<PostModel>(
+                    postModels,
                     new PageModel.Pagination(
-                            topics.getTotalElements(),
-                            topics.getNumber(),
-                            topics.getSize()
+                            postEntityPage.getTotalElements(),
+                            postEntityPage.getNumber(),
+                            postEntityPage.getSize()
                     )
             );
-            return ResponseEntity.ok(topicsPage);
+            return ResponseEntity.ok(postModelPage);
         } catch (Exception e) {
             String message = e.getMessage();
             log.warn(message);
