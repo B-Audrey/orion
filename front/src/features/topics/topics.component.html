@@ -1,6 +1,6 @@
-<div class="topics-container">
+<div class="card-container">
   @if (viewModel$ | async; as topicPage) {
-    @for (topic of topicPage.data; track topic.uuid) {
+    @for (topic of topicPage.content; track topic.uuid) {
       <mdd-topic-card [topic]="topic" />
     }
   }

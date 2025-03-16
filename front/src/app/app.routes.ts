@@ -2,7 +2,7 @@ import { Route } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from '../features/auth/login/login.component';
 import { ErrorComponent } from '../features/error/error.component';
-import { ArticlesComponent } from '../features/articles/articles.component';
+import { PostsComponent } from '../features/posts/posts.component';
 import { authGuard } from './auth.guard';
 import { AuthComponent } from '../features/auth/auth.component';
 import { SigninComponent } from '../features/auth/signin/signin.component';
@@ -18,11 +18,11 @@ export const routes: Route[] = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'home',
+        redirectTo: 'posts',
       },
       {
-        path: 'home',
-        component: ArticlesComponent,
+        path: 'posts',
+        component: PostsComponent,
       },
       {
         path: 'topics',

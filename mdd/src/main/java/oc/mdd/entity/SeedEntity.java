@@ -9,7 +9,7 @@ import lombok.Data;
 public class SeedEntity {
 
     @Id
-    private int id;
+    private int id; // use voluntary ids here for manual generation tha would be impossible with uuids
 
     @Column(nullable = false)
     private String name;

@@ -1,7 +1,5 @@
 package oc.mdd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -10,24 +8,27 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity
 @RequiredArgsConstructor
-@Table(name = "topics")
-@EntityListeners(AuditingEntityListener.class) // Pour les champs created_at et updated_at
-public class TopicEntity {
-
+@Table(name = "comments")
+@EntityListeners(AuditingEntityListener.class)
+public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String uuid;
 
-    @Column(nullable = false, unique = true)
-    private String label;
+    @Column(columnDefinition = "TEXT")
+    private String content;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String description;
+    @ManyToOne(fetch = FetchType.EAGER )
+    @JoinColumn()
+    private UserEntity user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn()
+    private PostEntity post;
 
     @CreatedDate
     @Column(updatable = false)
@@ -39,14 +40,4 @@ public class TopicEntity {
 
     @Column()
     private LocalDateTime deletedAt;
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "topics")
-    private List<UserEntity> users;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "topic")
-    private List<PostEntity> posts;
-
-
 }

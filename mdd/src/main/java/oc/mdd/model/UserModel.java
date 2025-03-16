@@ -12,23 +12,23 @@ public class UserModel {
     private String email;
     private String name;
     private List<TopicEntity> topics;
-    private String created_at;
-    private String updated_at;
-    private String deleted_at;
+    private String createdAt;
+    private String updatedAt;
+    private String deletedAt;
 
-    public UserModel(String uuid, String email, String name, List<TopicEntity> topics, LocalDateTime created_at, LocalDateTime updated_at) {
+    public UserModel(String uuid, String email, String name, List<TopicEntity> topics, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.uuid = uuid;
         this.email = email;
         this.name = name;
         this.topics = topics;
-        this.created_at = String.valueOf(created_at);
-        this.updated_at = String.valueOf(updated_at);
-        this.deleted_at = String.valueOf(deleted_at);
+        this.createdAt = String.valueOf(createdAt);
+        this.updatedAt = String.valueOf(updatedAt);
+        this.deletedAt = String.valueOf(deletedAt);
     }
 
     @Override
     public String toString() {
-        return "User:{id=" + uuid + ", email=" + email + ", name=" + name + " topics" + topics + ", created_at=" + created_at + ", " +
-                "updated_at=" + updated_at + "}";
+        return "User:{id=" + uuid + ", email=" + email + ", name=" + name + " topics" + topics + ", createdAt=" + createdAt + ", " +
+                "updatedAt=" + updatedAt + "}";
     }
 }

@@ -16,7 +16,11 @@ public class TopicService {
     private final TopicRepository topicRepository;
 
     public Page<TopicEntity> getTopics(PaginationQueryDto pageDto) {
-        Pageable pageable = PaginationUtil.createPageable(pageDto.getPage(), pageDto.getSize());
+        Pageable pageable = PaginationUtil.createPageable(pageDto.getPage(), pageDto.getSize(), pageDto.getSort());
         return this.topicRepository.findAll(pageable);
+    }
+
+    public TopicEntity getTopicByUuid(String topicUuid) {
+        return this.topicRepository.findByUuid(topicUuid);
     }
 }

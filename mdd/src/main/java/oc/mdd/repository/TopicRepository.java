@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface TopicRepository extends JpaRepository<TopicEntity, String> {
 
     TopicEntity findByUuid(String topicUuid);
+
+    TopicEntity findByLabel(String label);
 }

@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Page } from '../interfaces/page';
-import { Topic } from '../interfaces/topic';
+import { Page, Topic } from '../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class TopicService {
