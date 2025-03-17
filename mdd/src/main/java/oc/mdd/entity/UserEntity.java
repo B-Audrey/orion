@@ -47,7 +47,7 @@ public class UserEntity implements UserDetails {
     @Column()
     private LocalDateTime deletedAt;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER) // warn, topics become too heavy, think about refactoring here.
     @JoinTable(
             name = "user_topics",
             joinColumns = @JoinColumn(name = "users_uuid"),
@@ -59,8 +59,8 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<PostEntity> posts;
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @OneToMany(mappedBy = "user")
     private List<CommentEntity> comments;
 
     @PreRemove

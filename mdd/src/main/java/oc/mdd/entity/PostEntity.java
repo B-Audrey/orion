@@ -1,6 +1,6 @@
 package oc.mdd.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,6 @@ public class PostEntity {
     private UserEntity user;
 
     @OneToMany(mappedBy = "post")
-    @JsonManagedReference
     private List<CommentEntity> comments;
 
     @CreatedDate

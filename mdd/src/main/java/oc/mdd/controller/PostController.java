@@ -1,14 +1,16 @@
 package oc.mdd.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oc.mdd.dto.PaginationQueryDto;
 import oc.mdd.dto.PostCreationDto;
 import oc.mdd.entity.PostEntity;
-import oc.mdd.model.PostModel;
+import oc.mdd.entity.UserEntity;
+import oc.mdd.model.PageModel;
 import oc.mdd.model.error.BadRequestException;
-import oc.mdd.model.error.NotFoundException;
 import oc.mdd.service.PostService;
-import oc.mdd.utils.mappers.PostMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,20 +24,20 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
-    private final PostMapper postMapper;
+
+
 
     @GetMapping("{uuid}")
     public ResponseEntity<?> getPost(
             @PathVariable String uuid
             ) {
         try {
-            PostEntity post = postService.findByUuidWithComments(uuid);
-            PostModel postModel = postMapper.convertToPostModel(post);
-            return ResponseEntity.ok(postModel);
+            PostEntity post = postService.findByUuid(uuid);
+            return ResponseEntity.ok(post);
         } catch (Exception e) {
             String message = e.getMessage();
             log.warn(message);
-            throw new NotFoundException(message);
+            throw new BadRequestException(message);
         }
     }
 

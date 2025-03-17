@@ -4,7 +4,7 @@ import {
   LOCALE_ID,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { provideStore } from '@ngxs/store';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -24,7 +24,7 @@ registerLocaleData(localEn);
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(routes),
     provideStore([UserState]),
     importProvidersFrom(
       BrowserAnimationsModule,

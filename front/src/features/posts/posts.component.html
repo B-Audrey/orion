@@ -17,7 +17,7 @@
   @if (viewModel$ | async; as page) {
     <div class="card-container">
       @for (post of page.content; track post) {
-        <mat-card [routerLink]="['..', post.uuid]">
+        <mat-card>
           <mat-card-header>
             <mat-card-title>{{ post.title || 'Label non renseigné' }}</mat-card-title>
           </mat-card-header>

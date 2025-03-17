@@ -5,12 +5,14 @@ import oc.mdd.dto.PaginationQueryDto;
 import oc.mdd.dto.PostCreationDto;
 import oc.mdd.entity.PostEntity;
 import oc.mdd.entity.TopicEntity;
+import oc.mdd.model.PostModel;
+import oc.mdd.model.TopicModel;
+import oc.mdd.model.UserModel;
 import oc.mdd.repository.PostRepository;
 import oc.mdd.utils.PaginationUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +20,24 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final TopicService topicService;
+    private final UserService userService;
 
+    public PostModel convertToModel(PostEntity postEntity) {
+        return new PostModel(
+                postEntity.getUuid(),
+                postEntity.getTitle(),
+                postEntity.getContent(),
+                this.topicService.convertToTopicModel(postEntity.getTopic()),
+                this.userService.convertToUserModel(postEntity.getUser()),
+                postEntity.getCreatedAt(),
+                postEntity.getUpdatedAt(),
+                postEntity.getDeletedAt()
 
-    public PostEntity findByUuidWithComments(String uuid) {
-        return this.postRepository.findByUuidWithComments(uuid);
+        );
+    }
+
+    public PostEntity findByUuid(String uuid) {
+        return this.postRepository.findByUuid(uuid);
     }
 
     public PostEntity createPost(PostCreationDto post) {
@@ -33,7 +49,6 @@ public class PostService {
         return this.postRepository.save(postEntity);
     }
 
-    @Transactional
     public Page<PostEntity> getUserFeed(String uuid, PaginationQueryDto pageDto) {
         Pageable pageable = PaginationUtil.createPageable(pageDto.getPage(), pageDto.getSize(), pageDto.getSort());
         return postRepository.findUserFeed(uuid, pageable);
