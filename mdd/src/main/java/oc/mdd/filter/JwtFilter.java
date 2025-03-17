@@ -31,35 +31,38 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UserService userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException {
         final String authorizationHeader = req.getHeader("Authorization");
         String useremail = null;
         String jwtToken = null;
+        try {
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwtToken = authorizationHeader.substring(7);
-            useremail = jwtUtils.extractUserEmail(jwtToken);
-        }
-
-        if (useremail != null) {
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(useremail);
-
-            if (jwtUtils.validateToken(jwtToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
-                                                                                                        null,
-                                                                                                        userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                try {
-                    UserEntity connectedUser = userService.getUserByEmail(useremail);
-                    req.setAttribute("user", connectedUser);
-                } catch (Exception e) {
-                    throw new UnauthorizedException(e.getMessage());
-                }
-
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                jwtToken = authorizationHeader.substring(7);
+                useremail = jwtUtils.extractUserEmail(jwtToken);
             }
-        }
+
+            if (useremail != null) {
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(useremail);
+
+                if (jwtUtils.validateToken(jwtToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                                                                                                            null,
+                                                                                                            userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    UserEntity connectedUser = userService.getUserByEmail(useremail);
+                    if (connectedUser == null) {
+                        throw new UnauthorizedException("User not found");
+                    }
+                    req.setAttribute("user", connectedUser);
+
+                }
+            }
         chain.doFilter(req, res);
+        } catch (Exception e) {
+            throw new ServletException();
+        }
     }
 
     @Override

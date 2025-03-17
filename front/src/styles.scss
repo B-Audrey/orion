@@ -7,7 +7,7 @@
   --secondary-color: #e3b79a;
   --success-color: #556b2fff;
   --warning-color: #a40f0f;
-  --background-grey: #f5f5f5;
+  --background-grey: #eeeeee;
 }
 
 * {
@@ -89,8 +89,8 @@ h2 {
   }
 }
 
-mat-card {
-  background-color: var(--background-grey);
+.mat-mdc-card {
+  --mdc-elevated-card-container-color: var(--background-grey); //overwrite material color variable
   padding: 5px;
 
   & .mat-mdc-card-title {
