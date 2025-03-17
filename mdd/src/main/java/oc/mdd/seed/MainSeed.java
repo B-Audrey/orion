@@ -1,13 +1,7 @@
 package oc.mdd.seed;
 
-import oc.mdd.entity.PostEntity;
-import oc.mdd.entity.SeedEntity;
-import oc.mdd.entity.TopicEntity;
-import oc.mdd.entity.UserEntity;
-import oc.mdd.repository.PostRepository;
-import oc.mdd.repository.SeedRepository;
-import oc.mdd.repository.TopicRepository;
-import oc.mdd.repository.UserRepository;
+import oc.mdd.entity.*;
+import oc.mdd.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -36,6 +30,9 @@ public class MainSeed implements CommandLineRunner {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @Value("${spring.sql.init.mode}")
     private String initializationMode;
 
@@ -46,6 +43,7 @@ public class MainSeed implements CommandLineRunner {
             this.createTopics();
             this.createUser();
             this.createPosts();
+            this.addComments();
             // ...add more seeds here
             // seeds are created with id to be created only once by a determined order
             // think about increment ids correctly !!
@@ -97,8 +95,8 @@ public class MainSeed implements CommandLineRunner {
     private void createPosts() {
         int postSeedId = 3;
         if (!seedRepository.existsById(postSeedId)) {
-            PostEntity post = new PostEntity();
-            UserEntity user = userRepository.findByName("user");
+            PostEntity post;
+            UserEntity user = userRepository.findByName("User Name");
             TopicEntity angular = topicRepository.findByLabel("Angular");
             TopicEntity react = topicRepository.findByLabel("React");
             List<String> postTitle = Arrays.asList("Article 1", "Article 2", "Article 3", "Article 4", "Article 5");
@@ -116,6 +114,24 @@ public class MainSeed implements CommandLineRunner {
             seedRepository.save(seed);
         }
     }
+
+    private void addComments() {
+        int commentSeedId = 4;
+        if (!seedRepository.existsById(commentSeedId)) {
+            PostEntity post = postRepository.findByTitle("Article 1 sur Angular");
+            UserEntity user = userRepository.findByEmail("user@dev.fr");
+            List<String> commentsContent = Arrays.asList("Comment 1", "Comment 2", "Comment 3");
+            for (String content : commentsContent) {
+                CommentEntity comment = generateCommentEntity(content, user, post);
+                this.commentRepository.save(comment);
+            }
+            SeedEntity seed = new SeedEntity();
+            seed.setId(commentSeedId);
+            seed.setName("add fake comments");
+            seedRepository.save(seed);
+        }
+    }
+
 
     private static TopicEntity generateTopicEntity(String label) {
         TopicEntity topic = new TopicEntity();
@@ -147,6 +163,14 @@ public class MainSeed implements CommandLineRunner {
         post.setUser(user);
         post.setTopic(topic);
         return post;
+    }
+
+    private static CommentEntity generateCommentEntity(String content, UserEntity user, PostEntity post) {
+        CommentEntity comment = new CommentEntity();
+        comment.setContent("Content of " + content + " is a correct sized comment");
+        comment.setUser(user);
+        comment.setPost(post);
+        return comment;
     }
 
 }

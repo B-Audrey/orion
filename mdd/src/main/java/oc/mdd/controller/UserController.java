@@ -10,7 +10,7 @@ import oc.mdd.dto.UserUpdateDto;
 import oc.mdd.entity.PostEntity;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.model.PageModel;
-import oc.mdd.model.PostModel;
+import oc.mdd.model.PostListModel;
 import oc.mdd.model.UserModel;
 import oc.mdd.model.error.BadRequestException;
 import oc.mdd.model.error.ForbiddenException;
@@ -18,6 +18,8 @@ import oc.mdd.model.error.UnauthorizedException;
 import oc.mdd.service.PostService;
 import oc.mdd.service.UserService;
 import oc.mdd.utils.PasswordUtil;
+import oc.mdd.utils.mappers.PostMapper;
+import oc.mdd.utils.mappers.UserMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,8 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
     private final PostService postService;
+    private final UserMapper userMapper;
+    private final PostMapper postMapper;
     private final PasswordUtil strongPasswordValidator;
 
     @GetMapping("{userUuid}/topic-subscription/{topicUuid}")
@@ -76,7 +80,7 @@ public class UserController {
     }
 
     @GetMapping("my-feed")
-    public ResponseEntity<?> getAllPosts(
+    public ResponseEntity<?> getUserFeed(
             HttpServletRequest request,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
@@ -86,11 +90,11 @@ public class UserController {
             PaginationQueryDto pageDto = new PaginationQueryDto(page, size, sort);
             Page<PostEntity> postEntityPage = this.postService.getUserFeed(user.getUuid(), pageDto);
             List<PostEntity> postModelContent = postEntityPage.getContent();
-            List<PostModel> postModels = postModelContent.stream()
-                    .map(postService::convertToModel)
+            List<PostListModel> postListModels = postModelContent.stream()
+                    .map(postMapper::convertToPostListModel)
                     .toList();
-            PageModel<PostModel> postModelPage = new PageModel<PostModel>(
-                    postModels,
+            PageModel<PostListModel> postModelPage = new PageModel<PostListModel>(
+                    postListModels,
                     new PageModel.Pagination(
                             postEntityPage.getTotalElements(),
                             postEntityPage.getNumber(),
@@ -134,7 +138,7 @@ public class UserController {
                 throw new ForbiddenException(message);
             }
             UserEntity updatedUser = userService.updateUser(uuid, userUpdateDto);
-            UserModel userModel = userService.convertToUserModel(updatedUser);
+            UserModel userModel = userMapper.convertToUserModel(updatedUser);
             return ResponseEntity.ok(userModel);
         } catch (Exception e) {
             String message = e.getMessage();

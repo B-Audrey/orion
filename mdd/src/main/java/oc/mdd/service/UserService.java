@@ -6,7 +6,6 @@ import oc.mdd.dto.UserSigninDto;
 import oc.mdd.dto.UserUpdateDto;
 import oc.mdd.entity.TopicEntity;
 import oc.mdd.entity.UserEntity;
-import oc.mdd.model.UserModel;
 import oc.mdd.repository.TopicRepository;
 import oc.mdd.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,15 +20,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TopicRepository topicRepository;
-
-    public UserModel convertToUserModel(UserEntity user) {
-        return new UserModel(user.getUuid(),
-                             user.getEmail(),
-                             user.getName(),
-                             user.getTopics(),
-                             user.getCreatedAt(),
-                             user.getUpdatedAt());
-    }
 
     public UserEntity getUserByEmail(String email) throws Exception {
         return Optional.ofNullable(userRepository.findByEmail(email))

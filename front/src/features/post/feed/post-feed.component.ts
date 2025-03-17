@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { PageQueryParams, SortDirection, UserService } from '../../shared';
+import { PageQueryParams, SortDirection, UserService } from '../../../shared';
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -20,11 +20,12 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatCardTitle,
     DatePipe,
     MatProgressSpinner,
+    RouterLink,
   ],
-  templateUrl: './posts.component.html',
-  styleUrl: './posts.component.scss',
+  templateUrl: './post-feed.component.html',
+  styleUrl: './post-feed.component.scss',
 })
-export class PostsComponent {
+export class PostFeedComponent {
   #userService = inject(UserService);
   isAcsSort = signal<SortDirection>(SortDirection.DESC);
   activeRoute = inject(ActivatedRoute);
