@@ -5,14 +5,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oc.mdd.utils.JwtUtils;
 import oc.mdd.dto.AuthLoginDto;
 import oc.mdd.entity.UserEntity;
-import oc.mdd.model.*;
+import oc.mdd.model.UserModel;
 import oc.mdd.model.error.ForbiddenException;
 import oc.mdd.model.error.NotFoundException;
 import oc.mdd.model.error.UnauthorizedException;
 import oc.mdd.service.UserService;
+import oc.mdd.utils.JwtUtils;
+import oc.mdd.utils.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +33,7 @@ import java.util.Map;
 public class AuthController {
     private final JwtUtils jwtUtils;
     private final UserService userService;
+    private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
 
     @Value("${app.refresh-expiration-time}")
@@ -42,7 +44,7 @@ public class AuthController {
         try {
             UserEntity user = (UserEntity) request.getAttribute("user");
             if (user != null) {
-                UserModel me = userService.convertToUserModel(user);
+                UserModel me = userMapper.convertToUserModel(user);
                 return ResponseEntity.ok(me);
             }
             throw new UnauthorizedException("user not found");
@@ -63,6 +65,9 @@ public class AuthController {
                 throw new UnauthorizedException("error");
             }
             String email = jwtUtils.extractUserEmail(refreshToken);
+            if(email == null) {
+                throw new UnauthorizedException("error");
+            }
             UserEntity user = userService.getUserByEmail(email);
             if (user == null) {
                 throw new UnauthorizedException("error");

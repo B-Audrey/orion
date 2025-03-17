@@ -1,5 +1,6 @@
 package oc.mdd.model.error;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Order(-1)
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ForbiddenException.class)

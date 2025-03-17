@@ -2,7 +2,6 @@ import { Route } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from '../features/auth/login/login.component';
 import { ErrorComponent } from '../features/error/error.component';
-import { PostsComponent } from '../features/posts/posts.component';
 import { authGuard } from './auth.guard';
 import { AuthComponent } from '../features/auth/auth.component';
 import { SigninComponent } from '../features/auth/signin/signin.component';
@@ -22,7 +21,7 @@ export const routes: Route[] = [
       },
       {
         path: 'posts',
-        component: PostsComponent,
+        loadChildren: () => import('../features/post/post.routes'),
       },
       {
         path: 'topics',

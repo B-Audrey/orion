@@ -1,0 +1,32 @@
+<div class="header">
+  <div class="back-button" [routerLink]="['..']">
+    <span class="material-symbols-outlined">west</span>
+  </div>
+  <h1>Titre de l'article séléctionné</h1>
+</div>
+<article>
+  @if (viewModel$ | async; as post) {
+    <div class="post-infos">
+      <div class="post-infos-header">
+        <span>{{ post.createdAt | date }}</span>
+        <span>{{ post.user.name || 'Auteur non renseigné' }}</span>
+        <span>{{ post.topic.label }}</span>
+      </div>
+      <p>Content : {{ post.content || 'Description non renseignée' }}</p>
+    </div>
+    <hr />
+    <p>Commentaires</p>
+    <div class="comments">
+      @for (comment of post.comments; track comment.uuid) {
+        <div class="comment-bloc">
+          <span class="comment-user">{{ comment.user.name }}</span>
+          <div class="comment-content">
+            <p>{{ comment.content }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <mat-spinner></mat-spinner>
+  }
+</article>
