@@ -1,9 +1,13 @@
 package oc.mdd.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oc.mdd.dto.CommentCreationDto;
 import oc.mdd.dto.PostCreationDto;
+import oc.mdd.entity.CommentEntity;
 import oc.mdd.entity.PostEntity;
+import oc.mdd.entity.UserEntity;
 import oc.mdd.model.PostModel;
 import oc.mdd.model.error.BadRequestException;
 import oc.mdd.model.error.NotFoundException;
@@ -27,11 +31,28 @@ public class PostController {
     @GetMapping("{uuid}")
     public ResponseEntity<?> getPost(
             @PathVariable String uuid
-            ) {
+    ) {
         try {
             PostEntity post = postService.findByUuidWithComments(uuid);
             PostModel postModel = postMapper.convertToPostModel(post);
             return ResponseEntity.ok(postModel);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            log.warn(message);
+            throw new NotFoundException(message);
+        }
+    }
+
+    @PostMapping("{uuid}/comment")
+    public ResponseEntity<?> postComment(
+            HttpServletRequest request,
+            @PathVariable String uuid,
+            @RequestBody @Validated CommentCreationDto commentCreationDto
+    ) {
+        try {
+            UserEntity user = (UserEntity) request.getAttribute("user");
+            PostEntity savedPost = this.postService.postCommentOnPost(uuid, commentCreationDto.getContent(), user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedPost);
         } catch (Exception e) {
             String message = e.getMessage();
             log.warn(message);

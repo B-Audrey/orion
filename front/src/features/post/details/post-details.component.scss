@@ -36,7 +36,6 @@ article {
   width: 90%;
   @media (min-width: 768px) {
     max-width: 900px;
-    width: 80%;
   }
   margin: auto;
 }
@@ -45,6 +44,7 @@ article {
   display: flex;
   flex-wrap: wrap;
   column-gap: 5em;
+
   & span {
     margin: 10px 0;
   }
@@ -54,25 +54,84 @@ hr {
   width: 95%;
 }
 
+.comments {
+  width: 80%;
+  margin: auto;
+}
+
 .comment-bloc {
   display: flex;
   margin-bottom: 1em;
+  flex-direction: column-reverse;
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 
   & .comment-user {
-    width: 200px;
     text-align: right;
     padding-right: 1em;
+    @media (min-width: 768px) {
+      width: 200px;
+    }
   }
 
   & .comment-content {
-    background-color: var(--background-grey);
     border-radius: 10px;
     padding: 1em;
     flex: 1;
     min-height: 4em;
+    @media (min-width: 768px) {
+      background-color: var(--background-grey);
+    }
 
     & p {
       margin: 0;
+    }
+  }
+}
+
+form {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 10px auto 0;
+  @media (min-width: 768px) {
+    max-width: 900px;
+    width: 80%;
+  }
+
+  textarea {
+    resize: none;
+    flex: 1;
+    width: 100%;
+    min-height: 120px;
+    border-radius: 20px;
+    padding: 15px 60px 15px 15px;
+    font-size: 1em;
+    @media (min-width: 768px) {
+      padding: 15px;
+    }
+  }
+
+  textarea:focus-visible {
+    border: 1px solid var(--primary-color);
+  }
+
+  button {
+    border: none;
+    background: none;
+    width: 0;
+    padding: 2px;
+    position: relative;
+    right: 75px;
+    @media (min-width: 768px) {
+      right: 0;
+      margin: 0 15px;
+      width: unset;
+    }
+    & svg {
+      cursor: pointer;
     }
   }
 }
