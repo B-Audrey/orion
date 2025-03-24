@@ -13,9 +13,10 @@ export interface Pagination {
 }
 
 export interface PageQueryParams {
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
   sort?: SortDirection;
+  search?: string;
 }
 
 export enum SortDirection {

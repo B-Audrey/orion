@@ -1,12 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Page, Topic } from '../interfaces';
+import { Page, PageQueryParams, Topic } from '../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class TopicService {
-  private readonly http = inject(HttpClient);
+  readonly #http = inject(HttpClient);
+  readonly #url = '/api/topics';
 
-  getTopics$() {
-    return this.http.get<Page<Topic>>('/api/topics');
+  getTopics$(params?: PageQueryParams) {
+    return this.#http.get<Page<Topic>>(`${this.#url}`, { params: { ...params } });
   }
 }

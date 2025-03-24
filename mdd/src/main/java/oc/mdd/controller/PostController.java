@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oc.mdd.dto.CommentCreationDto;
 import oc.mdd.dto.PostCreationDto;
-import oc.mdd.entity.CommentEntity;
 import oc.mdd.entity.PostEntity;
 import oc.mdd.entity.UserEntity;
 import oc.mdd.model.PostModel;
@@ -61,9 +60,10 @@ public class PostController {
     }
 
     @PostMapping("new")
-    public ResponseEntity<?> createPost(@RequestBody PostCreationDto post) {
+    public ResponseEntity<?> createPost(HttpServletRequest request,  @RequestBody PostCreationDto post) {
         try {
-            PostEntity newPost = postService.createPost(post);
+            UserEntity user = (UserEntity) request.getAttribute("user");
+            PostEntity newPost = postService.createPost(post, user);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
         } catch (Exception e) {
             String message = e.getMessage();
