@@ -17,9 +17,9 @@ public class TopicService {
 
 
 
-    public Page<TopicEntity> getTopics(PaginationQueryDto pageDto) {
+    public Page<TopicEntity> getTopics(PaginationQueryDto pageDto, String search) {
         Pageable pageable = PaginationUtil.createPageable(pageDto.getPage(), pageDto.getSize(), pageDto.getSort());
-        return this.topicRepository.findAll(pageable);
+        return this.topicRepository.findWithFilters(search, pageable);
     }
 
     public TopicEntity getTopicByUuid(String topicUuid) {

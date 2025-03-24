@@ -1,34 +1,34 @@
-.back-button {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-
-  & span {
-    width: 40px;
-    height: 40px;
-    font-size: 2.5em;
-  }
-}
-
-h1 {
-  margin: 17px 0 18px 60px;
-  text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word; /* Ancienne syntaxe, toujours reconnue */
-
-  @media (min-width: 768px) {
-    margin: 18px 0;
-  }
-}
-
 .header {
   max-width: 700px;
   width: 90%;
+  margin: 10px auto 0;
   @media (min-width: 768px) {
     max-width: 900px;
     width: 80%;
   }
-  margin: 10px auto 0;
+
+  .back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    & span {
+      width: 40px;
+      height: 40px;
+      font-size: 2.5em;
+    }
+  }
+
+  h1 {
+    margin: 17px 0 18px 60px;
+    text-align: left;
+    overflow-wrap: break-word;
+    word-wrap: break-word; /* Ancienne syntaxe, toujours reconnue */
+
+    @media (min-width: 768px) {
+      margin: 18px 0;
+    }
+  }
 }
 
 article {
@@ -130,6 +130,7 @@ form {
       margin: 0 15px;
       width: unset;
     }
+
     & svg {
       cursor: pointer;
     }

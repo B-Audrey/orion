@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { MatAnchor } from '@angular/material/button';
 import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { switchMap } from 'rxjs';
@@ -11,7 +11,6 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   selector: 'mdd-posts',
   standalone: true,
   imports: [
-    MatButton,
     NgClass,
     AsyncPipe,
     MatCard,
@@ -21,6 +20,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     DatePipe,
     MatProgressSpinner,
     RouterLink,
+    MatAnchor,
   ],
   templateUrl: './post-feed.component.html',
   styleUrl: './post-feed.component.scss',

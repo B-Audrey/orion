@@ -7,7 +7,6 @@ import oc.mdd.entity.CommentEntity;
 import oc.mdd.entity.PostEntity;
 import oc.mdd.entity.TopicEntity;
 import oc.mdd.entity.UserEntity;
-import oc.mdd.model.error.NotFoundException;
 import oc.mdd.repository.CommentRepository;
 import oc.mdd.repository.PostRepository;
 import oc.mdd.utils.PaginationUtil;
@@ -29,12 +28,13 @@ public class PostService {
         return this.postRepository.findByUuidWithComments(uuid);
     }
 
-    public PostEntity createPost(PostCreationDto post) {
+    public PostEntity createPost(PostCreationDto post, UserEntity user) {
         TopicEntity topicEntity = this.topicService.getTopicByUuid(post.getTopicUuid());
         PostEntity postEntity = new PostEntity();
         postEntity.setTitle(post.getTitle());
         postEntity.setContent(post.getContent());
         postEntity.setTopic(topicEntity);
+        postEntity.setUser(user);
         return this.postRepository.save(postEntity);
     }
 

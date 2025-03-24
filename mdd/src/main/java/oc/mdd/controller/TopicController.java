@@ -28,10 +28,12 @@ public class TopicController {
     public ResponseEntity<?> getAllTopics(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
-            @RequestParam(required = false) String sort) {
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String search) {
         try {
             PaginationQueryDto pageDto = new PaginationQueryDto(page, size, sort);
-            Page<TopicEntity> topics = this.topicService.getTopics(pageDto);
+            String searchString = search == null ? "" : search;
+            Page<TopicEntity> topics = this.topicService.getTopics(pageDto, searchString);
             PageModel<TopicEntity> topicsPage = new PageModel<>(
                     topics.getContent(),
                     new PageModel.Pagination(

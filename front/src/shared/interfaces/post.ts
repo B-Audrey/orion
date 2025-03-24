@@ -21,3 +21,9 @@ export interface Comment {
   deletedAt?: string;
   user: User;
 }
+
+export interface PostCreation {
+  topicUuid: string;
+  title: string;
+  content: string;
+}
