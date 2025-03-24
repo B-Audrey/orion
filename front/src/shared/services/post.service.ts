@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Post } from '../interfaces/post';
+import { Comment, Post } from '../interfaces/post';
 
 @Injectable({
   providedIn: 'root',
@@ -11,5 +11,9 @@ export class PostService {
 
   getPost$(uuid: string) {
     return this.http.get<Post>(`${this.#url}/${uuid}`);
+  }
+
+  postComment$(postUuid: string, comment: Omit<Comment, 'user'>) {
+    return this.http.post<Post>(`${this.#url}/${postUuid}/comment`, comment);
   }
 }

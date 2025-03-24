@@ -14,11 +14,10 @@ export interface Post {
 }
 
 export interface Comment {
-  uuid: string;
+  uuid?: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-  post: Post;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string;
   user: User;
 }
