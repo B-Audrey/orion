@@ -53,8 +53,10 @@ form {
   }
 }
 
-.password {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+mat-error {
+  margin-top: -25px;
+}
+
+.submit-button {
+  margin: 1em 0;
 }

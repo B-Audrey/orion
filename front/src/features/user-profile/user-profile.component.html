@@ -29,9 +29,11 @@
   <h2 class="mobile-hidden">Abonnements</h2>
   <div class="card-container">
     @for (topic of user.topics; track topic.uuid) {
-      <mdd-topic-card [topic]="topic" />
+      <mdd-topic-card [topic]="topic" [isRemoveTopicsDisabled]="false" />
     }
   </div>
 } @else {
-  <mat-spinner></mat-spinner>
+  <div class="full-loader">
+    <mat-spinner></mat-spinner>
+  </div>
 }

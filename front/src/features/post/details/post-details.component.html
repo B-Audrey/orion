@@ -28,7 +28,9 @@
     </div>
   </article>
 } @else {
-  <mat-spinner></mat-spinner>
+  <div class="full-loader">
+    <mat-spinner></mat-spinner>
+  </div>
 }
 <form [formGroup]="form" (ngSubmit)="addComment()">
   <textarea placeholder="Écrivez ici votre commentaire" formControlName="content"></textarea>

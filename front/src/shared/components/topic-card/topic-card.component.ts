@@ -33,6 +33,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 export class TopicCardComponent {
   #store = inject(Store);
   topic = input<Topic>({} as Topic);
+  isRemoveTopicsDisabled = input<boolean>();
 
   userTopics$ = this.#store.select(UserState.getTopics);
 

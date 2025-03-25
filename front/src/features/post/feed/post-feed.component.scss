@@ -53,3 +53,12 @@ mat-card {
     -webkit-line-clamp: 5;
   }
 }
+
+.no-content {
+  width: 80%;
+  margin: 2em auto;
+
+  a {
+    text-decoration: underline;
+  }
+}

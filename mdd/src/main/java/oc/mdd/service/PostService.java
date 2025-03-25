@@ -23,11 +23,23 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final TopicService topicService;
 
-
+    /**
+     * Find a post by its uuid
+     *
+     * @param uuid the post uuid
+     * @return the post
+     */
     public PostEntity findByUuidWithComments(String uuid) {
         return this.postRepository.findByUuidWithComments(uuid);
     }
 
+    /**
+     * Create a post
+     *
+     * @param post the post dto containing the post data and the topic uuid
+     * @param user the user to link
+     * @return the created post
+     */
     public PostEntity createPost(PostCreationDto post, UserEntity user) {
         TopicEntity topicEntity = this.topicService.getTopicByUuid(post.getTopicUuid());
         PostEntity postEntity = new PostEntity();
@@ -38,17 +50,27 @@ public class PostService {
         return this.postRepository.save(postEntity);
     }
 
-    @Transactional
+    /**
+     * Get the user feed
+     *
+     * @param uuid    the user uuid
+     * @param pageDto the page params
+     * @return the user feed
+     */
     public Page<PostEntity> getUserFeed(String uuid, PaginationQueryDto pageDto) {
         Pageable pageable = PaginationUtil.createPageable(pageDto.getPage(), pageDto.getSize(), pageDto.getSort());
         return postRepository.findUserFeed(uuid, pageable);
 
     }
 
-    public PostEntity findByUuid(String uuid) {
-        return this.postRepository.findByUuid(uuid);
-    }
-
+    /**
+     * Post a comment on a post
+     *
+     * @param postUuid       the post uuid
+     * @param commentContent the comment content
+     * @param user           the user
+     * @return the post with the new comment
+     */
     public PostEntity postCommentOnPost(String postUuid, String commentContent, UserEntity user) throws Exception {
         PostEntity post = this.postRepository.findByUuid(postUuid);
         if (post == null) {

@@ -51,10 +51,6 @@ mat-nav-list {
   margin-top: 62px; // toolbar height
 }
 
-.sidenav-opened {
-  background-color: #efefefb2;
-}
-
 .content {
   display: flex;
   align-items: center;
@@ -69,9 +65,9 @@ mat-nav-list {
   & a {
     margin-left: 20px;
   }
+}
 
-  .active {
-    color: $primary-500;
-    font-weight: 500;
-  }
+.active {
+  color: $primary-500;
+  font-weight: 500;
 }

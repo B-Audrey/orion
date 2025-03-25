@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-@Setter
 @Getter
+@Setter
 public class AuthLoginDto {
     @Email()
     @NotEmpty()

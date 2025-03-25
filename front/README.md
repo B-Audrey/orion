@@ -1,27 +1,60 @@
-# Front
+# Monde de Dev
+Welcome in Monde de Dev, an Angular Front-end !
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.0.
+This project uses Node v22.0.0, so before next step, think about using
 
-## Development server
+```bash
+nvm use
+```
+or
+```bash
+nvm install
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Then, you can install your node_modules before starting (`npm install`).
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Start
+Run `npm run start` for a dev server. The app will open on its onw with "-o" option but otherwise, you can navigate to `http://localhost:4200/`.
 
 ## Build
-
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Front-end
+This project has now only the Front end, in src file, there is the app with 3 folders :
+- **app** : contains the basics of the app : app.component, guard, interceptor, the main routing file and the global layout
+- **assets**: contains the images, icons, fonts, etc.
+- **features**: contains the main features pages of the app
+- **style**: contains the global style files including material theme
+- **shared**: contains folders that can be user in other files like
+  - components that can be reused
+  - interface
+  - services that can be called from feature pages
+  - store
+  - utils will also be placed here
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Style
+Global style is made in style.scss fil but responsive and page style is made into component style files for now.
 
-## Running end-to-end tests
+**The user screen must be minimum 320px**.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Style is made mobile first and there is for now only one breakpoint that is :
+- 768px
 
-## Further help
+Material theme is used for the app, you can find the theme file in the style folder.
+For documentation, you can go to https://material.angular.io/guide/theming
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Using Material component is recommended, you can find the documentation here : https://material.angular.io/components/categories
+
+According to the design, colors are defined as CSS global variables in the style.scss file.
+
+## Back-end
+Back-end code is in a parent repo, you nedd to run it to have the full app working.
+
+## Clean code
+This project uses prettier, to keep code clean you can use (`npm run prettier:write`)
+This project uses eslint, to keep code clean you can use (`npm run lint`)
+
+For an easy use, before commiting, please run : 
+```bash
+npm run prettier:write && npm run lint
+```

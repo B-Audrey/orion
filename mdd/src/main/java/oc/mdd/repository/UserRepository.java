@@ -7,6 +7,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
+
+    /**
+     * Find a user by email and get also its linked topics
+     * @param email the user email to look for
+     * @return the full user infos
+     */
     @Query("""
                 SELECT u
                 FROM UserEntity u

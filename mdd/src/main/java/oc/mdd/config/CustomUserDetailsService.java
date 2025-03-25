@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepositoryInstance;                   // le repo du service
+    private final UserRepository userRepositoryInstance;
 
-    @Override   // méthode attendue par Spring security, override par la mienne
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepositoryInstance.findByEmail(username);
         if (user == null) {
