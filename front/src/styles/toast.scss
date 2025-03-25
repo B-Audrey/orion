@@ -1,0 +1,13 @@
+.mat-mdc-snack-bar-container.success {
+  --mdc-snackbar-container-color: var(--success-color);
+  & div.mat-mdc-snack-bar-surface {
+    color: white;
+  }
+}
+
+.mat-mdc-snack-bar-container.error {
+  --mdc-snackbar-container-color: var(--warning-color);
+  & div.mat-mdc-snack-bar-surface {
+    color: white;
+  }
+}

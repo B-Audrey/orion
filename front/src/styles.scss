@@ -1,6 +1,8 @@
 @use 'styles/material';
 @use 'styles/palette';
 @use 'styles/form';
+@use 'styles/card';
+@use 'styles/toast';
 
 :root {
   --primary-color: #7763c5;
@@ -17,20 +19,6 @@
 
 body {
   margin: 0;
-}
-
-.mat-mdc-snack-bar-container.success {
-  --mdc-snackbar-container-color: var(--success-color);
-  & div.mat-mdc-snack-bar-surface {
-    color: white;
-  }
-}
-
-.mat-mdc-snack-bar-container.error {
-  --mdc-snackbar-container-color: var(--warning-color);
-  & div.mat-mdc-snack-bar-surface {
-    color: white;
-  }
 }
 
 .warn-color {
@@ -73,47 +61,6 @@ h2 {
 .desktop-hidden {
   @media (min-width: 768px) {
     display: none;
-  }
-}
-
-.card-container {
-  width: 90%;
-  margin: 1em auto;
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 2em;
-  column-gap: 1em;
-  @media (min-width: 768px) {
-    width: 95%;
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.mat-mdc-card {
-  --mdc-elevated-card-container-color: var(--background-grey); //overwrite material color variable
-  padding: 5px;
-
-  & .mat-mdc-card-title {
-    font-weight: 700;
-    margin: 0;
-    padding: 0;
-  }
-
-  & .mat-mdc-card-content {
-    display: -webkit-box;
-    -webkit-line-clamp: 4; /* Nombre de lignes à afficher */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  & .mat-mdc-card-content:last-child {
-    padding-bottom: 0; // need to overwrite for webkit-box : user margin
-    margin-bottom: 16px;
-  }
-  & mat-card-actions {
-    display: flex;
-    justify-content: center;
   }
 }
 
