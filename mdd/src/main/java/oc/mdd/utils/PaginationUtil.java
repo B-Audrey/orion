@@ -11,6 +11,15 @@ public class PaginationUtil {
     private static final String DEFAULT_SORT = "ASC";
     private static final String SORT_PROPERTY = "createdAt";
 
+    /**
+     * Format a pageable object with default values to be used in repositories
+     * params are supposed to be filled by dto first
+     *
+     * @param page page number
+     * @param size page size
+     * @param sort sort order
+     * @return Pageable object
+     */
     public static Pageable createPageable(Integer page, Integer size, String sort) {
         if (page == null || page < 0) {
             page = DEFAULT_PAGE;
@@ -23,7 +32,6 @@ public class PaginationUtil {
         }
 
         Sort.Direction direction = Sort.Direction.valueOf(sort.toUpperCase());
-
         return PageRequest.of(page, size, Sort.by(direction, SORT_PROPERTY));
     }
 }

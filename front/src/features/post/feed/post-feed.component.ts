@@ -34,7 +34,7 @@ export class PostFeedComponent {
   viewModel$ = this.activeRoute.queryParams.pipe(
     switchMap(params => {
       const postParams: PageQueryParams = {
-        sort: params['sort'] ? params['sort'] : SortDirection.ASC,
+        sort: params['sort'] ? params['sort'] : SortDirection.DESC,
         page: params['page'] ? params['page'] : 0,
         size: params['size'] ? params['size'] : 500,
       };

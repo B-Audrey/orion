@@ -1,6 +1,8 @@
 package oc.mdd.controller;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oc.mdd.dto.PaginationQueryDto;
@@ -17,9 +19,11 @@ import oc.mdd.model.error.ForbiddenException;
 import oc.mdd.model.error.UnauthorizedException;
 import oc.mdd.service.PostService;
 import oc.mdd.service.UserService;
+import oc.mdd.utils.JwtUtils;
 import oc.mdd.utils.PasswordUtil;
 import oc.mdd.utils.mappers.PostMapper;
 import oc.mdd.utils.mappers.UserMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +45,19 @@ public class UserController {
     private final UserMapper userMapper;
     private final PostMapper postMapper;
     private final PasswordUtil strongPasswordValidator;
+    private final JwtUtils jwtUtils;
 
+    @Value("${app.refresh-expiration-time}")
+    private String refreshExpirationTime;
+
+    /**
+     * a user make subscription to a topic
+     *
+     * @param request   the request will contain the user extracted from the token by jwt filter
+     * @param userUuid  the uuid of the user to get
+     * @param topicUuid the uuid of the topic to add
+     * @return the user updated with its subscriptions including the new one
+     */
     @GetMapping("{userUuid}/topic-subscription/{topicUuid}")
     public ResponseEntity<?> addTopic(HttpServletRequest request, @PathVariable String userUuid,
             @PathVariable String topicUuid) {
@@ -61,6 +77,14 @@ public class UserController {
 
     }
 
+    /**
+     * a user unsubscribe from a topic
+     *
+     * @param request   the request will contain the user extracted from the token by jwt filter
+     * @param userUuid  the uuid of the user to get
+     * @param topicUuid the uuid of the topic to remove
+     * @return the user updated with its subscriptions without the removed one
+     */
     @GetMapping("{userUuid}/topic-unsubscription/{topicUuid}")
     public ResponseEntity<?> removeTopic(HttpServletRequest request, @PathVariable String userUuid,
             @PathVariable String topicUuid) {
@@ -79,6 +103,15 @@ public class UserController {
         }
     }
 
+    /**
+     * get the feed of the user, it will return posts where topics are includes in the user ones
+     *
+     * @param request the request will contain the user extracted from the token by jwt filter
+     * @param page    the page number
+     * @param size    the size of the page
+     * @param sort    the sort of the page
+     * @return the feed of the user
+     */
     @GetMapping("my-feed")
     public ResponseEntity<?> getUserFeed(
             HttpServletRequest request,
@@ -109,7 +142,12 @@ public class UserController {
         }
     }
 
-
+    /**
+     * add a new user
+     *
+     * @param userSigninDto the user to add
+     * @return the new created user
+     */
     @PostMapping("/new")
     public ResponseEntity<?> signin(@RequestBody UserSigninDto userSigninDto) {
         try {
@@ -128,9 +166,18 @@ public class UserController {
         }
     }
 
+    /**
+     * update the user
+     *
+     * @param request       the request will contain the user extracted from the token by jwt filter
+     * @param uuid          the uuid of the user to update
+     * @param userUpdateDto the new user infos
+     * @param response      the response to add the new refresh token in cookies including new data
+     * @return the updated user with its cookie in response
+     */
     @PutMapping("{uuid}")
     public ResponseEntity<?> updateUser(HttpServletRequest request, @PathVariable String
-            uuid, @RequestBody UserUpdateDto userUpdateDto) {
+            uuid, @RequestBody UserUpdateDto userUpdateDto, HttpServletResponse response) {
         try {
             UserEntity user = (UserEntity) request.getAttribute("user");
             if (uuid == null || !uuid.equals(user.getUuid())) {
@@ -138,6 +185,13 @@ public class UserController {
                 throw new ForbiddenException(message);
             }
             UserEntity updatedUser = userService.updateUser(uuid, userUpdateDto);
+            String refreshToken = jwtUtils.generateRefreshToken(updatedUser.getEmail()); //nedd to refresh jwt with
+            // new mail
+            Cookie refreshTokenCookie = new Cookie("mddRefreshToken", refreshToken);
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setPath("/api/auth/refresh");
+            refreshTokenCookie.setMaxAge(Integer.parseInt(refreshExpirationTime));
+            response.addCookie(refreshTokenCookie);
             UserModel userModel = userMapper.convertToUserModel(updatedUser);
             return ResponseEntity.ok(userModel);
         } catch (Exception e) {
@@ -147,6 +201,15 @@ public class UserController {
         }
     }
 
+    /**
+     * update the password of the user
+     * use patch because it is a partial update
+     *
+     * @param request         the request will contain the user extracted from the token by jwt filter
+     * @param uuid            the uuid of the user to update
+     * @param userPasswordDto the ancient and the new password
+     * @return an "ok" message to confirm the update
+     */
     @PatchMapping("{uuid}/password")
     public ResponseEntity<?> updatePassword(HttpServletRequest request, @PathVariable String
             uuid, @RequestBody UserPasswordDto userPasswordDto) {

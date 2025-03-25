@@ -1,7 +1,7 @@
 .back-button {
   @media (min-width: 768px) {
     position: absolute;
-    top: 10px;
+    top: 104px; //94 for toolbar height + 10 for margin
     left: 10px;
   }
 

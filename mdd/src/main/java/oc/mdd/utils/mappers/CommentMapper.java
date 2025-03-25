@@ -15,16 +15,18 @@ public class CommentMapper {
 
     public List<CommentModel> convertToCommentModelsList(List<CommentEntity> comments) {
         List<CommentModel> commentModels = new ArrayList<>();
-        for (CommentEntity commentEntity : comments) {
-            CommentModel commentModel = new CommentModel(
-                    commentEntity.getUuid(),
-                    commentEntity.getContent(),
-                    this.userMapper.convertToPartialUserModel(commentEntity.getUser()),
-                    commentEntity.getCreatedAt(),
-                    commentEntity.getUpdatedAt(),
-                    commentEntity.getDeletedAt()
-            );
-            commentModels.add(commentModel);
+        if (comments != null) {
+            for (CommentEntity commentEntity : comments) {
+                CommentModel commentModel = new CommentModel(
+                        commentEntity.getUuid(),
+                        commentEntity.getContent(),
+                        this.userMapper.convertToPartialUserModel(commentEntity.getUser()),
+                        commentEntity.getCreatedAt(),
+                        commentEntity.getUpdatedAt(),
+                        commentEntity.getDeletedAt()
+                );
+                commentModels.add(commentModel);
+            }
         }
         return commentModels;
     }

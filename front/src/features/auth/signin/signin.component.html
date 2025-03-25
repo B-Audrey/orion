@@ -22,30 +22,30 @@
   </div>
 
   <div class="form-field">
-    <div class="password">
-      <label for="password">Mot de passe</label>
-      @if (signinForm.get('password')?.dirty && signinForm.controls['password'].invalid) {
-        @if (!signinForm.controls.password.getError('isLongEnough')) {
-          <mat-error>doit contenir au moins 8 caractères</mat-error>
-        } @else if (!signinForm.controls.password.getError('hasNumber')) {
-          <mat-error>doit contenir un nombre</mat-error>
-        } @else if (!signinForm.controls.password.getError('hasLowerCase')) {
-          <mat-error>doit contenir un minuscule</mat-error>
-        } @else if (!signinForm.controls.password.getError('hasUpperCase')) {
-          <mat-error>doit contenir un majuscule</mat-error>
-        } @else if (!signinForm.controls.password.getError('hasSymbol')) {
-          <mat-error>doit contenir un caractère spécial</mat-error>
-        }
-      }
-    </div>
+    <label for="password">Mot de passe</label>
     <mat-form-field>
       <input id="password" matInput formControlName="password" type="password" />
     </mat-form-field>
+    @if (signinForm.get('password')?.dirty && signinForm.controls['password'].invalid) {
+      @if (!signinForm.controls.password.getError('isLongEnough')) {
+        <mat-error>doit contenir au moins 8 caractères</mat-error>
+      } @else if (!signinForm.controls.password.getError('hasNumber')) {
+        <mat-error>doit contenir un nombre</mat-error>
+      } @else if (!signinForm.controls.password.getError('hasLowerCase')) {
+        <mat-error>doit contenir un minuscule</mat-error>
+      } @else if (!signinForm.controls.password.getError('hasUpperCase')) {
+        <mat-error>doit contenir un majuscule</mat-error>
+      } @else if (!signinForm.controls.password.getError('hasSymbol')) {
+        <mat-error>doit contenir un caractère spécial</mat-error>
+      }
+    }
   </div>
-
-  <div>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">
-      S'inscrire
-    </button>
-  </div>
+  <button
+    class="submit-button"
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="!signinForm.valid">
+    S'inscrire
+  </button>
 </form>

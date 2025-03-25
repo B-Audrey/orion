@@ -8,8 +8,12 @@
     </mat-card-content>
     <mat-card-actions>
       @if (userTopics.includes(topic().uuid)) {
-        <button mat-raised-button color="accent" (click)="removeTopic(topic().uuid)">
-          Se désabonner
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="removeTopic(topic().uuid)"
+          [disabled]="isRemoveTopicsDisabled()">
+          {{ isRemoveTopicsDisabled() ? 'Déjà abonné' : 'Se désabonner' }}
         </button>
       } @else {
         <button mat-raised-button color="primary" (click)="addTopic(topic().uuid)">
@@ -19,5 +23,7 @@
     </mat-card-actions>
   </mat-card>
 } @else {
-  <mat-spinner></mat-spinner>
+  <div class="full-loader">
+    <mat-spinner></mat-spinner>
+  </div>
 }

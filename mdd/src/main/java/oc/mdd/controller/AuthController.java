@@ -39,6 +39,12 @@ public class AuthController {
     @Value("${app.refresh-expiration-time}")
     private String refreshExpirationTime;
 
+    /**
+     * takes the personal user infos from the token
+     *
+     * @param request the request will contain the user extracted from the token by jwt filter
+     * @return the user infos
+     */
     @GetMapping("/me")
     public ResponseEntity<?> returnMeInfos(HttpServletRequest request) {
         try {
@@ -58,6 +64,13 @@ public class AuthController {
         }
     }
 
+    /**
+     * refresh the access token
+     *
+     * @param refreshToken the refresh token with the user to refresh
+     * @param response     the response to add the new refresh token in cookies
+     * @return a new access token and a refresh token in cookie into the response
+     */
     @GetMapping("/refresh")
     public ResponseEntity<?> refreshToken(@CookieValue(value = "mddRefreshToken", required = false) String refreshToken, HttpServletResponse response) {
         try {
@@ -65,7 +78,7 @@ public class AuthController {
                 throw new UnauthorizedException("error");
             }
             String email = jwtUtils.extractUserEmail(refreshToken);
-            if(email == null) {
+            if (email == null) {
                 throw new UnauthorizedException("error");
             }
             UserEntity user = userService.getUserByEmail(email);
@@ -90,15 +103,19 @@ public class AuthController {
         }
     }
 
+    /**
+     * login the user
+     *
+     * @param authLoginDto the infos to log user
+     * @param response     the access token in the response
+     * @return access token and refresh token in cookie
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthLoginDto authLoginDto, HttpServletResponse response) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            authLoginDto.getUsername(),
-                            authLoginDto.getPassword()
-                    )
-            );
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    authLoginDto.getUsername(),
+                    authLoginDto.getPassword()));
             UserEntity user = userService.findUserByNameOrMail(authLoginDto.getUsername());
             if (user == null) {
                 throw new UnauthorizedException("error");
@@ -124,6 +141,12 @@ public class AuthController {
         }
     }
 
+    /**
+     * logout the user
+     *
+     * @param response the response to delete the refresh token cookie by a new one with max age 0
+     * @return the cookie with max age 0 and an ok code
+     */
     @GetMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
         Cookie refreshTokenCookie = new Cookie("mddRefreshToken", null);

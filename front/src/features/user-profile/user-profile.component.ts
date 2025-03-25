@@ -59,6 +59,6 @@ export class UserProfileComponent {
     this.#store.dispatch(new UserActions.Update(this.updateForm.value as User));
   }
   changePassword() {
-    this.dialog.open(UserProfileDialogComponent);
+    this.dialog.open(UserProfileDialogComponent, { minWidth: '310px' });
   }
 }

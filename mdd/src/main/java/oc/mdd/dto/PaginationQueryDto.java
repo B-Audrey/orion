@@ -20,7 +20,14 @@ public class PaginationQueryDto {
 
     private String sort;
 
-
+    /**
+     * Default constructor
+     * Set default values for page, size and sort
+     *
+     * @param page page number begins to 0
+     * @param size page size default is 50
+     * @param sort sort order default is ASC
+     */
     public PaginationQueryDto(Integer page, Integer size, String sort) {
         if (page == null || page < 0) {
             this.page = DEFAULT_PAGE;

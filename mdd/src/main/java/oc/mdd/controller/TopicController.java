@@ -24,6 +24,15 @@ public class TopicController {
 
     private final TopicService topicService;
 
+    /**
+     * get all topics
+     *
+     * @param page   the page number
+     * @param size   the number of elements per page
+     * @param sort   the sort order
+     * @param search the search string to filter on labels
+     * @return a page of topics
+     */
     @GetMapping
     public ResponseEntity<?> getAllTopics(
             @RequestParam(required = false) Integer page,

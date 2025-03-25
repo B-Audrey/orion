@@ -1,7 +1,11 @@
 <div class="card-container">
   @if (viewModel$ | async; as topicPage) {
     @for (topic of topicPage.content; track topic.uuid) {
-      <mdd-topic-card [topic]="topic" />
+      <mdd-topic-card [topic]="topic" [isRemoveTopicsDisabled]="true" />
     }
+  } @else {
+    <div class="full-loader">
+      <mat-spinner></mat-spinner>
+    </div>
   }
 </div>

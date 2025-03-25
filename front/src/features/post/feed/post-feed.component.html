@@ -15,6 +15,15 @@
     </div>
   </div>
   @if (viewModel$ | async; as page) {
+    @if (page.content.length === 0) {
+      <div class="no-content">
+        <p>
+          Aucun article disponible. Veuillez choisir des thème pour voir les derniers articles
+          correspondants.
+        </p>
+        <a routerLink="/topics">Je consulte les thèmes disponibles</a>
+      </div>
+    }
     <div class="card-container">
       @for (post of page.content; track post) {
         <mat-card [routerLink]="['..', post.uuid]">
@@ -32,6 +41,8 @@
       }
     </div>
   } @else {
-    <mat-spinner></mat-spinner>
+    <div class="full-loader">
+      <mat-spinner></mat-spinner>
+    </div>
   }
 </div>

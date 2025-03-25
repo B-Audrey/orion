@@ -36,6 +36,18 @@ public class MainSeed implements CommandLineRunner {
     @Value("${spring.sql.init.mode}")
     private String initializationMode;
 
+    private final String firstUserMail = "user@dev.fr";
+    private final String secondUserMail = "author@dev.fr";
+
+
+    /**
+     * This method is called when the application is started.
+     * It is used to create fake data in the database.
+     * It is called only if the application is in "always" or "embedded" initialization mode.
+     * The run method is overridden to make seed as we want.
+     *
+     * @param args the command line arguments passed to the application
+     */
     @Override
     public void run(String... args) {
 
@@ -71,20 +83,26 @@ public class MainSeed implements CommandLineRunner {
     private void createUser() {
         int userSeedId = 2;
         if (!seedRepository.existsById(userSeedId)) {
-            UserEntity user = new UserEntity();
-            user.setEmail("user@dev.fr");
-            user.setName("User Name");
+            UserEntity firstUser = new UserEntity();
+            firstUser.setEmail(firstUserMail);
+            firstUser.setName("User Name");
+            UserEntity secondUser = new UserEntity();
+            secondUser.setEmail(secondUserMail);
+            secondUser.setName("Author Name");
             String password = this.passwordEncoder.encode("password");
-            user.setPassword(password);
+            firstUser.setPassword(password);
+            secondUser.setPassword(password);
             List<TopicEntity> topics = new ArrayList<>();
             TopicEntity java = topicRepository.findByLabel("Java");
             topics.add(java);
             TopicEntity angular = topicRepository.findByLabel("Angular");
             topics.add(angular);
+            firstUser.setTopics(topics);
             TopicEntity nest = topicRepository.findByLabel("NestJS");
             topics.add(nest);
-            user.setTopics(topics);
-            this.userRepository.save(user);
+            secondUser.setTopics(topics);
+            this.userRepository.save(firstUser);
+            this.userRepository.save(secondUser);
             SeedEntity seed = new SeedEntity();
             seed.setId(userSeedId);
             seed.setName("add fake user");
@@ -96,10 +114,10 @@ public class MainSeed implements CommandLineRunner {
         int postSeedId = 3;
         if (!seedRepository.existsById(postSeedId)) {
             PostEntity post;
-            UserEntity user = userRepository.findByName("User Name");
+            UserEntity user = userRepository.findByEmail(secondUserMail);
             TopicEntity angular = topicRepository.findByLabel("Angular");
             TopicEntity react = topicRepository.findByLabel("React");
-            List<String> postTitle = Arrays.asList("Article 1", "Article 2", "Article 3", "Article 4", "Article 5");
+            List<String> postTitle = Arrays.asList("Article 1", "Article 2", "Article 3");
             for (String title : postTitle) {
                 post = generatePostEntity(title, user, angular);
                 this.postRepository.save(post);
@@ -119,7 +137,7 @@ public class MainSeed implements CommandLineRunner {
         int commentSeedId = 4;
         if (!seedRepository.existsById(commentSeedId)) {
             PostEntity post = postRepository.findByTitle("Article 1 sur Angular");
-            UserEntity user = userRepository.findByEmail("user@dev.fr");
+            UserEntity user = userRepository.findByEmail(firstUserMail);
             List<String> commentsContent = Arrays.asList("Comment 1", "Comment 2", "Comment 3");
             for (String content : commentsContent) {
                 CommentEntity comment = generateCommentEntity(content, user, post);

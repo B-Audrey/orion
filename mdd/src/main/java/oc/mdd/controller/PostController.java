@@ -27,6 +27,12 @@ public class PostController {
     private final PostService postService;
     private final PostMapper postMapper;
 
+    /**
+     * get post by uuid
+     *
+     * @param uuid the uuid of the post
+     * @return one full post with its linked comments
+     */
     @GetMapping("{uuid}")
     public ResponseEntity<?> getPost(
             @PathVariable String uuid
@@ -42,16 +48,25 @@ public class PostController {
         }
     }
 
+    /**
+     * post a comment on a post
+     *
+     * @param request            the request will contain the user extracted from the token by jwt filter
+     * @param uuid               the uuid of the post who will receive the comment
+     * @param commentCreationDto the content of the comment
+     * @return the full post including the new comment
+     */
     @PostMapping("{uuid}/comment")
     public ResponseEntity<?> postComment(
             HttpServletRequest request,
             @PathVariable String uuid,
-            @RequestBody @Validated CommentCreationDto commentCreationDto
+            @RequestBody CommentCreationDto commentCreationDto
     ) {
         try {
             UserEntity user = (UserEntity) request.getAttribute("user");
             PostEntity savedPost = this.postService.postCommentOnPost(uuid, commentCreationDto.getContent(), user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedPost);
+            PostModel postModel = postMapper.convertToPostModel(savedPost);
+            return ResponseEntity.status(HttpStatus.CREATED).body(postModel);
         } catch (Exception e) {
             String message = e.getMessage();
             log.warn(message);
@@ -59,12 +74,21 @@ public class PostController {
         }
     }
 
+
+    /**
+     * create a new post
+     *
+     * @param request the request will contain the user extracted from the token by jwt filter
+     * @param post    the post to create
+     * @return the created post
+     */
     @PostMapping("new")
-    public ResponseEntity<?> createPost(HttpServletRequest request,  @RequestBody PostCreationDto post) {
+    public ResponseEntity<?> createPost(HttpServletRequest request, @RequestBody PostCreationDto post) {
         try {
             UserEntity user = (UserEntity) request.getAttribute("user");
             PostEntity newPost = postService.createPost(post, user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
+            PostModel postModel = postMapper.convertToPostModel(newPost);
+            return ResponseEntity.status(HttpStatus.CREATED).body(postModel);
         } catch (Exception e) {
             String message = e.getMessage();
             log.warn(message);
