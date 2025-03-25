@@ -77,8 +77,3 @@ Spring Security is used to secure the application.
 Authentication is done by JWT, you can find the configuration in the SecurityConfig class.
 You can find JWt documentation here : https://jwt.io/introduction/
 Users are linked to request to be accessible by the controllers.
-
-## Commit
-
-This project is versioned on github and using the conventional commit message format.
-You can find more information about it here : https://www.conventionalcommits.org/en/v1.0.0/
