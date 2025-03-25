@@ -33,8 +33,10 @@ This project has now only the Front end, in src file, there is the app with 3 fo
   - utils will also be placed here
 
 ## Style
-Global style is made in style.scss fil but responsive and page style is made into component style files for now
-The user screen must be minimum 320px.
+Global style is made in style.scss fil but responsive and page style is made into component style files for now.
+
+**The user screen must be minimum 320px**.
+
 Style is made mobile first and there is for now only one breakpoint that is :
 - 768px
 
