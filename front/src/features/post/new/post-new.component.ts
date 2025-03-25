@@ -78,7 +78,7 @@ export class PostNewComponent {
         },
       });
     } else {
-      return;
+      this.#toastService.error("le topic renseigné n'est pas valide");
     }
   }
 
