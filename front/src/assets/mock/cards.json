@@ -1,0 +1,19 @@
+[
+  {
+    "id": "card-1",
+    "title": "Séjour à la montagne",
+    "description": "Un week-end ressourçant au coeur des Alpes.",
+    "price": 199.99,
+    "imageUrl": "assets/img/sapin.jpg",
+    "linkUrl": "https://example.com/montagne"
+  },
+  {
+    "id": "card-2",
+    "title": "Atelier cuisine",
+    "description": "Apprenez à cuisiner comme un chef en 3 heures.",
+    "price": 49.0,
+    "imageUrl": "assets/img/sapin.jpg",
+    "linkUrl": "https://example.com/cuisine"
+  }
+]
+

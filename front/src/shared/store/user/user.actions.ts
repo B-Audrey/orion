@@ -28,4 +28,3 @@ export class Update {
 }
 
 // Password change removed in PoC
-

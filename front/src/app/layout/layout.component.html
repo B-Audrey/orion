@@ -1,14 +1,22 @@
 <mat-toolbar>
-  <img ngSrc="assets/img/sapin.jpg" alt="sapin logo" height="53" width="92" priority />
+  <a routerLink="/home" aria-label="Aller à l’accueil">
+    <img
+      id="app-logo-img"
+      ngSrc="assets/img/lutins.png"
+      alt="Noel"
+      height="88"
+      width="44"
+      priority />
+  </a>
   <div class="menu-container">
     <div class="links">
       <a routerLinkActive="active" routerLink="/ethan">Ethan</a>
       <a routerLinkActive="active" routerLink="/william">William</a>
     </div>
   </div>
-  <button mat-icon-button aria-label="button with account icon" routerLink="/my-profile">
+  <!-- <button mat-icon-button aria-label="button with account icon" routerLink="/my-profile">
     <span class="material-symbols-outlined">account_circle</span>
-  </button>
+  </button> -->
 </mat-toolbar>
 <main>
   <router-outlet />

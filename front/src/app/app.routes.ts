@@ -1,9 +1,6 @@
 import { Route } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
-import { LoginComponent } from '../features/auth/login/login.component';
 import { ErrorComponent } from '../features/error/error.component';
-import { authGuard } from './auth.guard';
-import { AuthComponent } from '../features/auth/auth.component';
 import { UserProfileComponent } from '../features/user-profile/user-profile.component';
 import { HomeComponent } from '../features/home/home.component';
 import { EthanComponent } from '../features/ethan/ethan.component';
@@ -13,7 +10,6 @@ export const routes: Route[] = [
   {
     path: '',
     component: LayoutComponent,
-    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -35,20 +31,6 @@ export const routes: Route[] = [
       {
         path: 'my-profile',
         component: UserProfileComponent,
-      },
-    ],
-  },
-  {
-    path: 'auth',
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        component: AuthComponent,
-      },
-      {
-        path: 'login',
-        component: LoginComponent,
       },
     ],
   },
