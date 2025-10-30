@@ -36,11 +36,6 @@ export class UserState {
     return state?.user?.uuid ? state.user : undefined;
   }
 
-  @Selector()
-  static getTopics(state: UserStateModel): string[] {
-    return state.user?.topics?.map(topic => topic.uuid) || [];
-  }
-
   @Action(UserActions.Me)
   me$(ctx: StateContext<UserStateModel>): Observable<unknown> {
     return this.#authService.getMe$().pipe(tap((user: User) => ctx.patchState({ user })));
@@ -106,52 +101,5 @@ export class UserState {
     }
   }
 
-  @Action(UserActions.ChangePassword)
-  patchPassword$(
-    ctx: StateContext<UserStateModel>,
-    { actualPassword, newPassword }: UserActions.ChangePassword,
-  ) {
-    return this.#userService
-      .patchPassword$(ctx.getState().user?.uuid || '', {
-        actualPassword,
-        newPassword,
-      })
-      .pipe(
-        catchError(() => {
-          this.#toastService.error('Erreur lors de la mise à jour de votre mot de passe');
-          return EMPTY;
-        }),
-        tap(() => {
-          this.#toastService.success('Votre mot de passe a été mis à jour');
-        }),
-      );
-  }
-
-  @Action(UserActions.AddTopic)
-  addTopic$(ctx: StateContext<UserStateModel>, { topicUuid }: UserActions.AddTopic) {
-    return this.#userService.addTopic$(ctx.getState().user?.uuid || '', topicUuid).pipe(
-      catchError(() => {
-        this.#toastService.error("Erreur lors de l'ajout du thème");
-        return EMPTY;
-      }),
-      tap(user => {
-        ctx.patchState({ user });
-        this.#toastService.success('Le thème vous a bien été ajouté');
-      }),
-    );
-  }
-
-  @Action(UserActions.RemoveTopic)
-  removeTopic$(ctx: StateContext<UserStateModel>, { topicUuid }: UserActions.RemoveTopic) {
-    return this.#userService.removeTopic$(ctx.getState().user?.uuid || '', topicUuid).pipe(
-      catchError(() => {
-        this.#toastService.error('Erreur lors de la suppression du thème');
-        return EMPTY;
-      }),
-      tap(user => {
-        ctx.patchState({ user });
-        this.#toastService.success('Le thème vous a bien été supprimé');
-      }),
-    );
-  }
+  // Password change removed in PoC
 }

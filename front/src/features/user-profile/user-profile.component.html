@@ -18,19 +18,9 @@
     <button mat-raised-button color="primary" [disabled]="!updateForm.valid">Sauvegarder</button>
   </form>
   <div class="actions">
-    <span (click)="changePassword()" (keydown)="changePassword()" [tabIndex]="0"
-      >Modifier mon mot de passe</span
-    >
     <span class="warn-color" (click)="logout()" (keydown)="logout()" [tabIndex]="0"
       >Se déconnecter</span
     >
-  </div>
-  <hr />
-  <h2 class="mobile-hidden">Abonnements</h2>
-  <div class="card-container">
-    @for (topic of user.topics; track topic.uuid) {
-      <mdd-topic-card [topic]="topic" [isRemoveTopicsDisabled]="false" />
-    }
   </div>
 } @else {
   <div class="full-loader">

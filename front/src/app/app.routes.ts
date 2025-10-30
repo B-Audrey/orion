@@ -5,8 +5,8 @@ import { ErrorComponent } from '../features/error/error.component';
 import { authGuard } from './auth.guard';
 import { AuthComponent } from '../features/auth/auth.component';
 import { SigninComponent } from '../features/auth/signin/signin.component';
-import { TopicsComponent } from '../features/topics/topics.component';
 import { UserProfileComponent } from '../features/user-profile/user-profile.component';
+import { HomeComponent } from '../features/home/home.component';
 
 export const routes: Route[] = [
   {
@@ -17,15 +17,11 @@ export const routes: Route[] = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'posts',
+        redirectTo: 'home',
       },
       {
-        path: 'posts',
-        loadChildren: () => import('../features/post/post.routes'),
-      },
-      {
-        path: 'topics',
-        component: TopicsComponent,
+        path: 'home',
+        component: HomeComponent,
       },
       {
         path: 'my-profile',
