@@ -4,9 +4,10 @@ import { LoginComponent } from '../features/auth/login/login.component';
 import { ErrorComponent } from '../features/error/error.component';
 import { authGuard } from './auth.guard';
 import { AuthComponent } from '../features/auth/auth.component';
-import { SigninComponent } from '../features/auth/signin/signin.component';
 import { UserProfileComponent } from '../features/user-profile/user-profile.component';
 import { HomeComponent } from '../features/home/home.component';
+import { EthanComponent } from '../features/ethan/ethan.component';
+import { WilliamComponent } from '../features/william/william.component';
 
 export const routes: Route[] = [
   {
@@ -22,6 +23,14 @@ export const routes: Route[] = [
       {
         path: 'home',
         component: HomeComponent,
+      },
+      {
+        path: 'ethan',
+        component: EthanComponent,
+      },
+      {
+        path: 'william',
+        component: WilliamComponent,
       },
       {
         path: 'my-profile',
@@ -40,10 +49,6 @@ export const routes: Route[] = [
       {
         path: 'login',
         component: LoginComponent,
-      },
-      {
-        path: 'signin',
-        component: SigninComponent,
       },
     ],
   },

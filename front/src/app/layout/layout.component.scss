@@ -15,11 +15,6 @@
 
 mat-toolbar {
   background-color: white;
-  border: 1px solid black;
-  height: 62px;
-  @media (min-width: 768px) {
-    height: 94px;
-  }
 
   & button {
     margin-left: 20px;

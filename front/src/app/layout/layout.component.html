@@ -1,72 +1,15 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #nav mode="over" position="end" fixedInViewport="true">
-    <mat-nav-list>
-      <div class="nav-list-container">
-        <a
-          (click)="nav.toggle()"
-          routerLinkActive="active"
-          routerLink="/posts"
-          class="desktop-hidden"
-          >Articles</a
-        >
-        <a
-          (click)="nav.toggle()"
-          class="desktop-hidden"
-          routerLinkActive="active"
-          routerLink="/topics"
-          >Thèmes</a
-        >
-      </div>
-      <button
-        (click)="nav.toggle()"
-        mat-icon-button
-        class="desktop-hidden"
-        aria-label="button with menu icon"
-        routerLink="/my-profile">
-        <span class="material-symbols-outlined">account_circle</span>
-      </button>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar>
-      <img
-        class="desktop-hidden"
-        ngSrc="assets/img/logo.png"
-        alt="mdd logo"
-        height="53"
-        width="92"
-        priority />
-      <img
-        class="mobile-hidden"
-        ngSrc="assets/img/logo.png"
-        alt="mdd logo"
-        height="81"
-        width="140"
-        priority />
-      <!--    DESKTOP MENU-->
-      <div class="menu-container">
-        <div class="links mobile-hidden">
-          <a routerLinkActive="active" routerLink="/posts" class="mobile-hidden">Articles</a>
-          <a routerLinkActive="active" routerLink="/topics" class="mobile-hidden">Thèmes</a>
-        </div>
-      </div>
-      <button
-        mat-icon-button
-        class="desktop-hidden"
-        aria-label="button with menu icon"
-        (click)="nav.toggle()">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
-      <button
-        mat-icon-button
-        class="mobile-hidden"
-        aria-label="button with menu icon"
-        routerLink="/my-profile">
-        <span class="material-symbols-outlined">account_circle</span>
-      </button>
-    </mat-toolbar>
-    <main>
-      <router-outlet />
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<mat-toolbar>
+  <img ngSrc="assets/img/sapin.jpg" alt="sapin logo" height="53" width="92" priority />
+  <div class="menu-container">
+    <div class="links">
+      <a routerLinkActive="active" routerLink="/ethan">Ethan</a>
+      <a routerLinkActive="active" routerLink="/william">William</a>
+    </div>
+  </div>
+  <button mat-icon-button aria-label="button with account icon" routerLink="/my-profile">
+    <span class="material-symbols-outlined">account_circle</span>
+  </button>
+</mat-toolbar>
+<main>
+  <router-outlet />
+</main>

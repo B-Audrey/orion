@@ -1,10 +1,10 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatIconButton } from '@angular/material/button';
-import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatNavList } from '@angular/material/list';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'mdd-layout',
@@ -20,7 +20,6 @@ import { NgClass, NgOptimizedImage } from '@angular/common';
     MatIconButton,
     MatToolbar,
     NgOptimizedImage,
-    NgClass,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
